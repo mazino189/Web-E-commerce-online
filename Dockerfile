@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    curl \
+    nodejs \
+    npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql gd zip bcmath
 
@@ -29,6 +32,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Chạy composer install
 RUN composer install --no-interaction --optimize-autoloader --no-dev --ignore-platform-reqs
+RUN npm install 
+RUN npm run build
 
 # TẠO FILE SQLITE RỖNG, PHÂN QUYỀN VÀ CHẠY MIGRATION KHI BUILD
 RUN touch /var/www/html/database/database.sqlite \
