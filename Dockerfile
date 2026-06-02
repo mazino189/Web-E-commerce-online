@@ -1,6 +1,6 @@
 ﻿FROM php:8.3-apache
 
-# Cài đặt các thư viện hệ thống cần thiết (thêm libzip-dev)
+# Cài đặt các thư viện hệ thống cần thiết
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -27,11 +27,14 @@ COPY . .
 # Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Chạy composer install với cờ --ignore-platform-reqs để đảm bảo tương thích hoàn toàn
+# Chạy composer install
 RUN composer install --no-interaction --optimize-autoloader --no-dev --ignore-platform-reqs
 
-# Cấp quyền ghi cho thư mục lưu trữ của Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# TẠO FILE SQLITE RỖNG, PHÂN QUYỀN VÀ CHẠY MIGRATION KHI BUILD
+RUN touch /var/www/html/database/database.sqlite \
+    && chown -R www-data:www-data /var/www/html/database \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && php artisan migrate --force
 
 # Mở cổng kết nối 80
 EXPOSE 80
