@@ -11,7 +11,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // register admin middleware globally //
+
     }
 
     /**
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // environment variable for production //
+        if (app()->environment('production')) {
+            // force https in production //
+            URL::forceScheme('https');
+        }
     }
 }
