@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->timestamps();
         });
     }
-    public function downn(): void
+    public function down(): void
     {
         // drop brands table
         Schema::dropIfExist('brands');

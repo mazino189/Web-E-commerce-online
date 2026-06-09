@@ -20,7 +20,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        // if not admin, redirect to home or show error
-        return redirect('/'); // or return response()->json(['error' => 'Unauthorized'], 403);
+        return response()->json(['message' => 'Forbidden.'], 403);
     }
 }

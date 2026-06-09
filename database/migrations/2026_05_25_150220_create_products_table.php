@@ -22,4 +22,9 @@ return new class extends Migration {
            $table->timestamps();
         });
     }
+    // public function down(): void
+    public function down(): void{
+        // drop products table //
+        Schema::dropIfExists('products');
+    }
 };

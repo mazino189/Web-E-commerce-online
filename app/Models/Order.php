@@ -3,25 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Order;
-use App\Models\Product;
-class OrderItem extends Model
+use App\Models\User;
+use App\Models\OrderItem;
+
+class Order extends Model
 {
-    // this is fillable fields for order item model //
     protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'price',
+        'user_id',
+        'total_amount',
+        'status',
+        'shipping_address',
+        'phone_number',
+        'payment_status',
+        'payment_method',
     ];
-    // relation order with order item model //
-    public function order()
-    {        
-        return $this->belongsTo(Order::class);
-    }
-    // relation product with order item model //
-    public function product()
+
+    protected $casts = [
+        'total_amount' => 'decimal:2',
+    ];
+
+    public function user()
     {
-        return $this->belongsTo(Product::class);
-    }    
+        return $this->belongsTo(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

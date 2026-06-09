@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 
 class Category extends Model
 {
-    // this is fillable fields for category model //
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'slug',
@@ -15,7 +17,11 @@ class Category extends Model
         'image',
         'status',
     ];
-    // relation with product model //
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
     public function products()
     {
         return $this->hasMany(Product::class);
