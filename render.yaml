@@ -8,7 +8,6 @@ services:
   - type: web
     name: kitchen-ecommerce
     env: docker
-    rootDir: kitchen-ecommerce # Points to the subdirectory containing the Dockerfile
     plan: free
     envVars:
       - key: APP_NAME
@@ -16,7 +15,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        generateValue: true
+        sync: false
       - key: APP_DEBUG
         value: false
       - key: APP_URL
