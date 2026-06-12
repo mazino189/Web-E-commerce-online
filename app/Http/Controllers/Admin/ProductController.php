@@ -27,8 +27,8 @@ class ProductController extends Controller
     public function create()
     {
         // this is create form for product in admin panel //
-        $category = Category::all();
-        $brand = Brand::all();
+        $categories = Category::all();
+        $brands = Brand::all();
         return view('admin.products.create', compact('categories', 'brands'));
     }
 
