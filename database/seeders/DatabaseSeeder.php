@@ -16,20 +16,24 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
        // admin user seeding //
-       User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('password'),
-            'role' => 'admin',
-       ]);
+       User::firstOrCreate(
+           ['email' => 'admin@gmail.com'],
+           [
+               'name' => 'Admin User',
+               'password' => bcrypt('password'),
+               'role' => 'admin',
+           ]
+       );
         
         // user seeding //
-        User::create([
-            'name' => 'John Doe',
-            'email' => 'John@gmail.com',
-            'password' => bcrypt('password'),
-            'role' => 'user',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'John@gmail.com'],
+            [
+                'name' => 'John Doe',
+                'password' => bcrypt('password'),
+                'role' => 'user',
+            ]
+        );
 
         // call other seeders //
         $this->call([
