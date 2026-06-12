@@ -21,7 +21,7 @@ Route::get('/products/{product}', [ProductController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/brands', [BrandController::class, 'index']);
-Route::get('/brands/{brand}', [BrandController::class, 'show']);    
+Route::get('/brands/{brand}', [BrandController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
