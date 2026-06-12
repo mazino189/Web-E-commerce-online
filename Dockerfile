@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
+    libpq-dev \
     zip \
     unzip \
     git \
@@ -13,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql gd zip bcmath
+    && docker-php-ext-install pdo_mysql pdo_pgsql gd zip bcmath
 
 # Kích hoạt module rewrite của Apache (cho Laravel Routing)
 RUN a2enmod rewrite
