@@ -1,0 +1,39 @@
+databases:
+  - name: kitchen-ecommerce-db
+    plan: free
+    databaseName: kitchendb
+    user: kitchenuser
+
+services:
+  - type: web
+    name: kitchen-ecommerce
+    env: docker
+    rootDir: kitchen-ecommerce # Points to the subdirectory containing the Dockerfile
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: "Kitchen Ecommerce"
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        # Render will assign a .onrender.com domain, this is a placeholder. 
+        # Update this to your exact Render URL after creation (e.g. https://your-app-name.onrender.com)
+        value: https://kitchen-ecommerce.onrender.com 
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kitchen-ecommerce-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: LOG_CHANNEL
+        value: stderr # Recommended for Render so logs appear in the dashboard
