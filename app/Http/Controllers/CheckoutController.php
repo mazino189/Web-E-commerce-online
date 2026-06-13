@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -23,10 +25,13 @@ class CheckoutController extends Controller
 
         try {
             $order = DB::transaction(function () use ($user, $cartItems, $request, $paymentStatus) {
+                $productIds = $cartItems->pluck('product_id');
+                $products = Product::lockForUpdate()->whereIn('id', $productIds)->get()->keyBy('id');
+
                 $total = 0;
 
                 foreach ($cartItems as $cartItem) {
-                    $product = $cartItem->product;
+                    $product = $products->get($cartItem->product_id);
 
                     if ($cartItem->quantity > $product->stock) {
                         throw new \RuntimeException("Insufficient stock. Only {$product->stock} available.");
@@ -46,7 +51,7 @@ class CheckoutController extends Controller
                 ]);
 
                 foreach ($cartItems as $cartItem) {
-                    $product = $cartItem->product;
+                    $product = $products->get($cartItem->product_id);
 
                     $order->items()->create([
                         'product_id' => $product->id,
@@ -62,7 +67,7 @@ class CheckoutController extends Controller
                 return $order->load('items');
             });
 
-            return response()->json($order, 201);
+            return OrderResource::make($order)->response()->setStatusCode(201);
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }

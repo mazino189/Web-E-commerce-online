@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CartRequest;
+use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,7 @@ class CartController extends Controller
             ->where('user_id', $request->user()->id)
             ->get();
 
-        return response()->json($cartItems);
+        return CartResource::collection($cartItems)->response();
     }
 
     public function store(CartRequest $request): JsonResponse
@@ -37,7 +38,7 @@ class CartController extends Controller
         if ($existing) {
             $existing->update(['quantity' => $newQuantity]);
 
-            return response()->json($existing, 200);
+            return CartResource::make($existing)->response()->setStatusCode(200);
         }
 
         $cart = Cart::create([
@@ -46,7 +47,7 @@ class CartController extends Controller
             'quantity' => $request->quantity,
         ]);
 
-        return response()->json($cart, 201);
+        return CartResource::make($cart)->response()->setStatusCode(201);
     }
 
     public function update(CartRequest $request, Cart $cart): JsonResponse
@@ -65,7 +66,7 @@ class CartController extends Controller
 
         $cart->update(['quantity' => $request->quantity]);
 
-        return response()->json($cart, 200);
+        return CartResource::make($cart)->response()->setStatusCode(200);
     }
 
     public function destroy(Request $request, Cart $cart): JsonResponse

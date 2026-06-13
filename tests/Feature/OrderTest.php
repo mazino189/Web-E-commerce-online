@@ -57,14 +57,14 @@ class OrderTest extends TestCase
 
     public function test_guest_cannot_access_orders(): void
     {
-        $this->getJson('/orders')->assertStatus(401);
-        $this->getJson('/orders/1')->assertStatus(401);
-        $this->postJson('/orders', [])->assertStatus(401);
+        $this->getJson('/api/orders')->assertStatus(401);
+        $this->getJson('/api/orders/1')->assertStatus(401);
+        $this->postJson('/api/orders', [])->assertStatus(401);
     }
 
     public function test_cannot_create_order_with_empty_cart(): void
     {
-        $response = $this->actingAs($this->user)->postJson('/orders', $this->validPayload());
+        $response = $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
 
         $response->assertStatus(422)
             ->assertJson(['message' => 'Cart is empty.']);
@@ -74,14 +74,16 @@ class OrderTest extends TestCase
     {
         $this->addToCart(2);
 
-        $response = $this->actingAs($this->user)->postJson('/orders', $this->validPayload());
+        $response = $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
 
         $response->assertStatus(201)
             ->assertJsonStructure([
-                'id',
-                'total_amount',
-                'items' => [
-                    ['id', 'product_id', 'quantity', 'price'],
+                'data' => [
+                    'id',
+                    'total_amount',
+                    'items' => [
+                        ['id', 'product_id', 'quantity', 'price'],
+                    ],
                 ],
             ]);
 
@@ -103,7 +105,7 @@ class OrderTest extends TestCase
     {
         $this->addToCart(2);
 
-        $this->actingAs($this->user)->postJson('/orders', $this->validPayload());
+        $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
 
         $this->assertDatabaseHas('products', [
             'id' => $this->product->id,
@@ -115,7 +117,7 @@ class OrderTest extends TestCase
     {
         $this->addToCart(2);
 
-        $this->actingAs($this->user)->postJson('/orders', $this->validPayload());
+        $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
 
         $this->assertDatabaseMissing('carts', [
             'user_id' => $this->user->id,
@@ -126,7 +128,7 @@ class OrderTest extends TestCase
     {
         $this->addToCart(10);
 
-        $response = $this->actingAs($this->user)->postJson('/orders', $this->validPayload());
+        $response = $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
 
         $response->assertStatus(422);
 
@@ -146,18 +148,18 @@ class OrderTest extends TestCase
             'phone_number' => '456',
         ]);
 
-        $this->actingAs($this->user)->getJson("/orders/{$order->id}")
+        $this->actingAs($this->user)->getJson("/api/orders/{$order->id}")
             ->assertStatus(403);
     }
 
     public function test_user_can_view_own_order(): void
     {
         $this->addToCart(2);
-        $response = $this->actingAs($this->user)->postJson('/orders', $this->validPayload());
-        $orderId = $response->json('id');
+        $response = $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
+        $orderId = $response->json('data.id');
 
-        $this->actingAs($this->user)->getJson("/orders/{$orderId}")
+        $this->actingAs($this->user)->getJson("/api/orders/{$orderId}")
             ->assertStatus(200)
-            ->assertJson(['id' => $orderId]);
+            ->assertJson(['data' => ['id' => $orderId]]);
     }
 }

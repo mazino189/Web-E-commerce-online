@@ -13,9 +13,14 @@ class CartRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
-            'product_id' => ['sometimes', 'required', 'integer', 'exists:products,id'],
+        $rules = [
             'quantity' => ['required', 'integer', 'min:1'],
         ];
+
+        if ($this->isMethod('post')) {
+            $rules['product_id'] = ['required', 'integer', 'exists:products,id'];
+        }
+
+        return $rules;
     }
 }

@@ -39,23 +39,25 @@ class CartTest extends TestCase
 
     public function test_guest_cannot_access_cart(): void
     {
-        $this->getJson('/cart')->assertStatus(401);
-        $this->postJson('/cart', ['product_id' => 1, 'quantity' => 1])->assertStatus(401);
-        $this->putJson('/cart/1', ['quantity' => 1])->assertStatus(401);
-        $this->deleteJson('/cart/1')->assertStatus(401);
+        $this->getJson('/api/cart')->assertStatus(401);
+        $this->postJson('/api/cart', ['product_id' => 1, 'quantity' => 1])->assertStatus(401);
+        $this->putJson('/api/cart/1', ['quantity' => 1])->assertStatus(401);
+        $this->deleteJson('/api/cart/1')->assertStatus(401);
     }
 
     public function test_user_can_add_product_to_cart(): void
     {
-        $response = $this->actingAs($this->user)->postJson('/cart', [
+        $response = $this->actingAs($this->user)->postJson('/api/cart', [
             'product_id' => $this->product->id,
             'quantity' => 2,
         ]);
 
         $response->assertStatus(201)
             ->assertJson([
-                'product_id' => $this->product->id,
-                'quantity' => 2,
+                'data' => [
+                    'product_id' => $this->product->id,
+                    'quantity' => 2,
+                ],
             ]);
 
         $this->assertDatabaseHas('carts', [
@@ -73,7 +75,7 @@ class CartTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $response = $this->actingAs($this->user)->postJson('/cart', [
+        $response = $this->actingAs($this->user)->postJson('/api/cart', [
             'product_id' => $this->product->id,
             'quantity' => 3,
         ]);
@@ -89,7 +91,7 @@ class CartTest extends TestCase
 
     public function test_cannot_add_product_exceeding_stock(): void
     {
-        $response = $this->actingAs($this->user)->postJson('/cart', [
+        $response = $this->actingAs($this->user)->postJson('/api/cart', [
             'product_id' => $this->product->id,
             'quantity' => 10,
         ]);
@@ -111,7 +113,7 @@ class CartTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $response = $this->actingAs($this->user)->putJson("/cart/{$cart->id}", [
+        $response = $this->actingAs($this->user)->putJson("/api/cart/{$cart->id}", [
             'quantity' => 10,
         ]);
 
@@ -127,7 +129,7 @@ class CartTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $response = $this->actingAs($this->user)->putJson("/cart/{$cart->id}", [
+        $response = $this->actingAs($this->user)->putJson("/api/cart/{$cart->id}", [
             'quantity' => 4,
         ]);
 
@@ -147,7 +149,7 @@ class CartTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $response = $this->actingAs($this->user)->deleteJson("/cart/{$cart->id}");
+        $response = $this->actingAs($this->user)->deleteJson("/api/cart/{$cart->id}");
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('carts', ['id' => $cart->id]);
@@ -162,10 +164,10 @@ class CartTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $this->actingAs($this->user)->putJson("/cart/{$cart->id}", ['quantity' => 3])
+        $this->actingAs($this->user)->putJson("/api/cart/{$cart->id}", ['quantity' => 3])
             ->assertStatus(403);
 
-        $this->actingAs($this->user)->deleteJson("/cart/{$cart->id}")
+        $this->actingAs($this->user)->deleteJson("/api/cart/{$cart->id}")
             ->assertStatus(403);
     }
 }

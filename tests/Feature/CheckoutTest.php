@@ -57,12 +57,12 @@ class CheckoutTest extends TestCase
 
     public function test_guest_cannot_checkout(): void
     {
-        $this->postJson('/checkout', $this->payload())->assertStatus(401);
+        $this->postJson('/api/checkout', $this->payload())->assertStatus(401);
     }
 
     public function test_empty_cart_denied(): void
     {
-        $response = $this->actingAs($this->user)->postJson('/checkout', $this->payload());
+        $response = $this->actingAs($this->user)->postJson('/api/checkout', $this->payload());
 
         $response->assertStatus(422)
             ->assertJson(['message' => 'Cart is empty.']);
@@ -72,7 +72,7 @@ class CheckoutTest extends TestCase
     {
         $this->addToCart(2);
 
-        $response = $this->actingAs($this->user)->postJson('/checkout', $this->payload('cod'));
+        $response = $this->actingAs($this->user)->postJson('/api/checkout', $this->payload('cod'));
 
         $response->assertStatus(201);
 
@@ -88,7 +88,7 @@ class CheckoutTest extends TestCase
     {
         $this->addToCart(2);
 
-        $response = $this->actingAs($this->user)->postJson('/checkout', $this->payload('bank_transfer'));
+        $response = $this->actingAs($this->user)->postJson('/api/checkout', $this->payload('bank_transfer'));
 
         $response->assertStatus(201);
 
@@ -104,7 +104,7 @@ class CheckoutTest extends TestCase
     {
         $this->addToCart(2);
 
-        $this->actingAs($this->user)->postJson('/checkout', $this->payload());
+        $this->actingAs($this->user)->postJson('/api/checkout', $this->payload());
 
         $this->assertDatabaseMissing('carts', ['user_id' => $this->user->id]);
     }
@@ -113,7 +113,7 @@ class CheckoutTest extends TestCase
     {
         $this->addToCart(2);
 
-        $this->actingAs($this->user)->postJson('/checkout', $this->payload());
+        $this->actingAs($this->user)->postJson('/api/checkout', $this->payload());
 
         $this->assertDatabaseHas('products', ['id' => $this->product->id, 'stock' => 3]);
     }
@@ -122,16 +122,16 @@ class CheckoutTest extends TestCase
     {
         $this->addToCart(1);
 
-        $response = $this->actingAs($this->user)->postJson('/checkout', $this->payload());
+        $response = $this->actingAs($this->user)->postJson('/api/checkout', $this->payload());
 
-        $response->assertJson(['status' => 'pending']);
+        $response->assertJson(['data' => ['status' => 'pending']]);
     }
 
     public function test_insufficient_stock_rollback(): void
     {
         $this->addToCart(10);
 
-        $response = $this->actingAs($this->user)->postJson('/checkout', $this->payload());
+        $response = $this->actingAs($this->user)->postJson('/api/checkout', $this->payload());
 
         $response->assertStatus(422);
         $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);

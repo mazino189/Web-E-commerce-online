@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,7 @@ class OrderController extends Controller
     {
         $orders = Order::with('items')->where('user_id', auth()->id())->latest()->get();
 
-        return response()->json($orders);
+        return OrderResource::collection($orders)->response();
     }
 
     public function store(OrderRequest $request): JsonResponse
@@ -29,11 +30,14 @@ class OrderController extends Controller
 
         try {
             $order = DB::transaction(function () use ($user, $cartItems, $request) {
+                $productIds = $cartItems->pluck('product_id');
+                $products = Product::lockForUpdate()->whereIn('id', $productIds)->get()->keyBy('id');
+
                 $total = 0;
                 $items = [];
 
                 foreach ($cartItems as $cartItem) {
-                    $product = $cartItem->product;
+                    $product = $products->get($cartItem->product_id);
 
                     if ($cartItem->quantity > $product->stock) {
                         throw new \RuntimeException("Insufficient stock. Only {$product->stock} available.");
@@ -44,6 +48,7 @@ class OrderController extends Controller
                         'product_id' => $product->id,
                         'quantity' => $cartItem->quantity,
                         'price' => $product->price,
+                        '_product' => $product,
                     ];
                 }
 
@@ -56,10 +61,13 @@ class OrderController extends Controller
                 ]);
 
                 foreach ($items as $item) {
-                    $orderItem = $order->items()->create($item);
+                    $order->items()->create([
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                    ]);
 
-                    $product = $orderItem->product;
-                    $product->decrement('stock', $item['quantity']);
+                    $item['_product']->decrement('stock', $item['quantity']);
                 }
 
                 Cart::where('user_id', $user->id)->delete();
@@ -67,7 +75,7 @@ class OrderController extends Controller
                 return $order->load('items');
             });
 
-            return response()->json($order, 201);
+            return OrderResource::make($order)->response()->setStatusCode(201);
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
@@ -75,12 +83,12 @@ class OrderController extends Controller
 
     public function show(Order $order): JsonResponse
     {
-        $order->load('items');
-
         if ($order->user_id !== auth()->id()) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
-        return response()->json($order);
+        $order->load('items');
+
+        return OrderResource::make($order)->response();
     }
 }
