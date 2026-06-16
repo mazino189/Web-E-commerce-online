@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Package, XCircle, ChevronRight } from 'lucide-react';
 import api from '../apiClient';
+import { productImage, handleImageError } from '../utils/categoryImages';
 
 interface OrderItem {
     id: number;
@@ -151,10 +152,11 @@ export default function Orders() {
                                     <div key={item.id} className="flex items-center gap-3">
                                         <div className="w-12 h-12 rounded-lg overflow-hidden bg-slate-900 shrink-0">
                                             <img
-                                                src={item.product?.image ?? ''}
+                                                src={productImage(item.product?.image)}
                                                 alt={item.product?.name ?? ''}
                                                 className="w-full h-full object-cover"
                                                 loading="lazy"
+                                                onError={handleImageError}
                                             />
                                         </div>
                                         <div className="flex-1 min-w-0">

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { productImage, handleImageError } from '../utils/categoryImages';
 
 interface Product {
     id: number;
@@ -13,8 +14,8 @@ interface Product {
     price: number;
     stock: number;
     image: string;
-    category: { name: string };
-    brand: { name: string };
+    category: { id: number; name: string; slug: string };
+    brand: { id: number; name: string; slug: string };
 }
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -54,10 +55,11 @@ export default function ProductCard({ product }: { product: Product }) {
         >
             <div className="aspect-[4/3] overflow-hidden bg-slate-900">
                 <img
-                    src={product.image}
+                    src={productImage(product.image, product.category?.slug)}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    onError={(e) => handleImageError(e, product.category?.slug)}
                 />
             </div>
             <div className="p-4 space-y-2">

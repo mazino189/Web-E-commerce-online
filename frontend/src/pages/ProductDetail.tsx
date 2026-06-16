@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ShoppingCart, Check, ChevronLeft, Package } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { productImage, handleImageError } from '../utils/categoryImages';
 import api from '../apiClient';
 
 interface Product {
@@ -95,9 +96,10 @@ export default function ProductDetail() {
             <div className="grid md:grid-cols-2 gap-8">
                 <div className="aspect-square rounded-xl overflow-hidden bg-surface border border-border">
                     <img
-                        src={product.image}
+                        src={productImage(product.image, product.category?.slug)}
                         alt={product.name}
                         className="w-full h-full object-cover"
+                        onError={(e) => handleImageError(e, product.category?.slug)}
                     />
                 </div>
 
