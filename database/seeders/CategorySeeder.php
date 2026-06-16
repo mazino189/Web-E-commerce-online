@@ -10,11 +10,13 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Kitchen Appliances', 'slug' => 'kitchen-appliances', 'description' => 'Blenders, kettles, and other electric appliances.'],
-            ['name' => 'Cookware', 'slug' => 'cookware', 'description' => 'Pots, pans, and high-quality skillet sets.'],
-            ['name' => 'Tableware', 'slug' => 'tableware', 'description' => 'Dinner sets, elegant plates, and serving bowls.'],
-            ['name' => 'Baking Tools', 'slug' => 'baking-tools', 'description' => 'Baking mats, trays, tins, and accessories.'],
-            ['name' => 'Food Storage', 'slug' => 'food-storage', 'description' => 'Airtight food containers and organizing jars.'],
+            ['name' => 'Laptops & Ultrabooks', 'slug' => 'laptops', 'description' => 'High-performance laptops, ultrabooks, and tablets for work and play.'],
+            ['name' => 'Smartphones', 'slug' => 'smartphones', 'description' => 'Flagship smartphones with cutting-edge technology and design.'],
+            ['name' => 'Audio & Speakers', 'slug' => 'audio', 'description' => 'Premium audio players, speakers, and sound systems.'],
+            ['name' => 'Wearables', 'slug' => 'wearables', 'description' => 'Smartwatches, fitness trackers, and wearable tech.'],
+            ['name' => 'Peripherals', 'slug' => 'peripherals', 'description' => 'Keyboards, mice, monitors, and desktop accessories.'],
+            ['name' => 'Headphones & Earphones', 'slug' => 'headphones', 'description' => 'Wireless headphones, earbuds, and audio headsets.'],
+            ['name' => 'Cameras & Optics', 'slug' => 'cameras', 'description' => 'Mirrorless cameras, lenses, drones, and imaging gear.'],
         ];
 
         foreach ($categories as $category) {

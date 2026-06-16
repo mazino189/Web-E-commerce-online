@@ -63,7 +63,7 @@ class AdminProductTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->actingAs($this->admin, 'sanctum')
-            ->getJson("/api/admin/products/{$product->id}");
+            ->getJson("/api/admin/products/{$product->slug}");
 
         $response->assertStatus(200)
             ->assertJson(['data' => ['id' => $product->id]]);
@@ -74,7 +74,7 @@ class AdminProductTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->actingAs($this->admin, 'sanctum')
-            ->putJson("/api/admin/products/{$product->id}", [
+            ->putJson("/api/admin/products/{$product->slug}", [
                 'name' => 'Updated Name',
                 'slug' => 'updated-slug',
                 'price' => 49.99,
@@ -94,7 +94,7 @@ class AdminProductTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->actingAs($this->admin, 'sanctum')
-            ->deleteJson("/api/admin/products/{$product->id}");
+            ->deleteJson("/api/admin/products/{$product->slug}");
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('products', ['id' => $product->id]);

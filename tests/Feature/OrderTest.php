@@ -162,4 +162,64 @@ class OrderTest extends TestCase
             ->assertStatus(200)
             ->assertJson(['data' => ['id' => $orderId]]);
     }
+
+    public function test_guest_cannot_cancel_order(): void
+    {
+        $order = Order::create([
+            'user_id' => $this->user->id,
+            'total_amount' => 10.00,
+            'status' => 'pending',
+            'shipping_address' => '123',
+            'phone_number' => '456',
+        ]);
+
+        $this->postJson("/api/orders/{$order->id}/cancel")
+            ->assertStatus(401);
+    }
+
+    public function test_cannot_cancel_non_pending_order(): void
+    {
+        $order = Order::create([
+            'user_id' => $this->user->id,
+            'total_amount' => 10.00,
+            'status' => 'shipped',
+            'shipping_address' => '123',
+            'phone_number' => '456',
+        ]);
+
+        $this->actingAs($this->user)->postJson("/api/orders/{$order->id}/cancel")
+            ->assertStatus(422)
+            ->assertJson(['message' => 'Only pending orders can be cancelled.']);
+    }
+
+    public function test_cannot_cancel_another_users_order(): void
+    {
+        $otherUser = User::factory()->create();
+        $order = Order::create([
+            'user_id' => $otherUser->id,
+            'total_amount' => 10.00,
+            'status' => 'pending',
+            'shipping_address' => '123',
+            'phone_number' => '456',
+        ]);
+
+        $this->actingAs($this->user)->postJson("/api/orders/{$order->id}/cancel")
+            ->assertStatus(403);
+    }
+
+    public function test_can_cancel_order_and_restore_stock(): void
+    {
+        $this->addToCart(2);
+        $response = $this->actingAs($this->user)->postJson('/api/orders', $this->validPayload());
+        $orderId = $response->json('data.id');
+
+        $this->assertDatabaseHas('products', ['id' => $this->product->id, 'stock' => 3]);
+
+        $this->actingAs($this->user)->postJson("/api/orders/{$orderId}/cancel")
+            ->assertStatus(200)
+            ->assertJson(['data' => ['status' => 'cancelled']]);
+
+        $this->assertDatabaseHas('products', ['id' => $this->product->id, 'stock' => 5]);
+        $this->assertDatabaseHas('orders', ['id' => $orderId, 'status' => 'cancelled']);
+    }
 }

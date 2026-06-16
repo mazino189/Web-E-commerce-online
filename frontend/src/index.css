@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .text-gradient-tech {
+        background: linear-gradient(to right, #E0E7FF, #A5B4FC, #67E8F9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+}
+
+@layer base {
+    body {
+        @apply bg-canvas text-muted antialiased;
+        font-family: 'Inter', 'Geist', system-ui, sans-serif;
+    }
+
+    ::selection {
+        background: rgba(99, 102, 241, 0.3);
+        color: #F1F5F9;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #020617;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #1E293B;
+        border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #334155;
+    }
+}

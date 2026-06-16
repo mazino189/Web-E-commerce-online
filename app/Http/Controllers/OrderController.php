@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function index(): JsonResponse
     {
-        $orders = Order::with('items')->where('user_id', auth()->id())->latest()->get();
+        $orders = Order::with('items.product')->where('user_id', auth()->id())->latest()->get();
 
         return OrderResource::collection($orders)->response();
     }
@@ -72,7 +72,7 @@ class OrderController extends Controller
 
                 Cart::where('user_id', $user->id)->delete();
 
-                return $order->load('items');
+                return $order->load('items.product');
             });
 
             return OrderResource::make($order)->response()->setStatusCode(201);
@@ -87,8 +87,38 @@ class OrderController extends Controller
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
-        $order->load('items');
+        $order->load('items.product');
 
         return OrderResource::make($order)->response();
+    }
+
+    public function cancel(Order $order): JsonResponse
+    {
+        if ($order->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Forbidden.'], 403);
+        }
+
+        if ($order->status !== 'pending') {
+            return response()->json(['message' => 'Only pending orders can be cancelled.'], 422);
+        }
+
+        try {
+            DB::transaction(function () use ($order) {
+                $order->load('items.product');
+                $order->update(['status' => 'cancelled']);
+
+                foreach ($order->items as $item) {
+                    Product::lockForUpdate()
+                        ->where('id', $item->product_id)
+                        ->increment('stock', $item->quantity);
+                }
+            });
+
+            $order->load('items.product');
+
+            return OrderResource::make($order)->response();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Cancellation failed.'], 500);
+        }
     }
 }

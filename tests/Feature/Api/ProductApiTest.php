@@ -55,7 +55,7 @@ class ProductApiTest extends TestCase
             'stock' => 10,
         ]);
 
-        $response = $this->getJson("/api/products/{$product->id}");
+        $response = $this->getJson("/api/products/{$product->slug}");
 
         $response->assertStatus(200)
             ->assertJson([
@@ -240,7 +240,7 @@ class ProductApiTest extends TestCase
             'stock' => 10,
         ]);
 
-        $response = $this->getJson("/api/products/{$product->id}");
+        $response = $this->getJson("/api/products/{$product->slug}");
 
         $response->assertStatus(200)
             ->assertJson([
