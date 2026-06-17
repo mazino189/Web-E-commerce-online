@@ -11,7 +11,7 @@ const categoryFallbacks: Record<string, string> = {
   'cookware': 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600',
   'tableware': 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=600',
   'baking-tools': 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600',
-  'food-storage': 'https://images.unsplash.com/photo-1594911774802-8822a707caff?w=600'
+  'food-storage': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600'
 };
 
 const genericFallback = 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600';
