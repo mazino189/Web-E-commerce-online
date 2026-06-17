@@ -111,16 +111,16 @@ def scrape_amazon():
 def generate_mock_data():
     print("Generating mock data fallback because scraping failed...")
     products = [
-        {'title': 'Apple iPhone 14 Pro Max 256GB', 'price': 1099.00, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'smartphones-tablets', 'brand': 'Apple'},
-        {'title': 'Samsung Galaxy S23 Ultra 512GB', 'price': 1199.99, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'smartphones-tablets', 'brand': 'Samsung'},
-        {'title': 'Google Pixel 7 Pro 128GB', 'price': 899.00, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'smartphones-tablets', 'brand': 'Google'},
-        {'title': 'Apple MacBook Air M2 8GB 256GB', 'price': 999.00, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'laptops-computers', 'brand': 'Apple'},
-        {'title': 'Dell XPS 13 Plus Laptop', 'price': 1299.00, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'laptops-computers', 'brand': 'Dell'},
-        {'title': 'HP Spectre x360 2-in-1 Laptop', 'price': 1399.99, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'laptops-computers', 'brand': 'HP'},
-        {'title': 'Anker USB C Hub 7-in-1', 'price': 34.99, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'accessories', 'brand': 'Anker'},
-        {'title': 'Logitech MX Master 3S Wireless Mouse', 'price': 99.99, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'accessories', 'brand': 'Logitech'},
-        {'title': 'Samsung 980 PRO 1TB PCIe NVMe Gen4 SSD', 'price': 89.99, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'accessories', 'brand': 'Samsung'},
-        {'title': 'Apple AirPods Pro (2nd Generation)', 'price': 249.00, 'image_url': 'https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg', 'category': 'accessories', 'brand': 'Apple'}
+        {'title': 'Apple iPhone 14 Pro Max 256GB', 'price': 1099.00, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=100', 'category': 'smartphones-tablets', 'brand': 'Apple'},
+        {'title': 'Samsung Galaxy S23 Ultra 512GB', 'price': 1199.99, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=101', 'category': 'smartphones-tablets', 'brand': 'Samsung'},
+        {'title': 'Google Pixel 7 Pro 128GB', 'price': 899.00, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=102', 'category': 'smartphones-tablets', 'brand': 'Google'},
+        {'title': 'Apple MacBook Air M2 8GB 256GB', 'price': 999.00, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=103', 'category': 'laptops-computers', 'brand': 'Apple'},
+        {'title': 'Dell XPS 13 Plus Laptop', 'price': 1299.00, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=104', 'category': 'laptops-computers', 'brand': 'Dell'},
+        {'title': 'HP Spectre x360 2-in-1 Laptop', 'price': 1399.99, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=105', 'category': 'laptops-computers', 'brand': 'HP'},
+        {'title': 'Anker USB C Hub 7-in-1', 'price': 34.99, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=106', 'category': 'accessories', 'brand': 'Anker'},
+        {'title': 'Logitech MX Master 3S Wireless Mouse', 'price': 99.99, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=107', 'category': 'accessories', 'brand': 'Logitech'},
+        {'title': 'Samsung 980 PRO 1TB PCIe NVMe Gen4 SSD', 'price': 89.99, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=108', 'category': 'accessories', 'brand': 'Samsung'},
+        {'title': 'Apple AirPods Pro (2nd Generation)', 'price': 249.00, 'image_url': 'https://loremflickr.com/600/600/electronics?lock=109', 'category': 'accessories', 'brand': 'Apple'}
     ]
     
     # Generate 30 total to meet the requirement by duplicating/varying
@@ -128,6 +128,7 @@ def generate_mock_data():
     while len(products) < 30:
         p = random.choice(base_products).copy()
         p['title'] = p['title'] + f" - Variant {len(products)}"
+        p['image_url'] = f"https://loremflickr.com/600/600/electronics?lock={len(products) + 110}"
         products.append(p)
 
     output_dir = 'cleaned_data'
