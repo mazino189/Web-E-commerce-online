@@ -1,21 +1,31 @@
-name,slug,description,price,category_id,brand_id,stock
-20in Monitor,20in-monitor,"High-quality 20in monitor — perfect for your everyday needs. Durable, reliable, and built to last.",109.99,2,5,91
-27in 4K Gaming Monitor,27in-4k-gaming-monitor,"High-quality 27in 4k gaming monitor — perfect for your everyday needs. Durable, reliable, and built to last.",389.99,2,5,24
-27in FHD Monitor,27in-fhd-monitor,"High-quality 27in fhd monitor — perfect for your everyday needs. Durable, reliable, and built to last.",149.99,2,5,13
-34in Ultrawide Monitor,34in-ultrawide-monitor,"High-quality 34in ultrawide monitor — perfect for your everyday needs. Durable, reliable, and built to last.",379.99,2,5,45
-AA Batteries (4-pack),aa-batteries-4-pack,"High-quality aa batteries (4-pack) — perfect for your everyday needs. Durable, reliable, and built to last.",3.84,4,5,41
-AAA Batteries (4-pack),aaa-batteries-4-pack,"High-quality aaa batteries (4-pack) — perfect for your everyday needs. Durable, reliable, and built to last.",2.99,4,5,38
-Apple Airpods Headphones,apple-airpods-headphones,"High-quality apple airpods headphones — perfect for your everyday needs. Durable, reliable, and built to last.",150.0,3,1,27
-Bose SoundSport Headphones,bose-soundsport-headphones,"High-quality bose soundsport headphones — perfect for your everyday needs. Durable, reliable, and built to last.",99.99,3,4,23
-Flatscreen TV,flatscreen-tv,"High-quality flatscreen tv — perfect for your everyday needs. Durable, reliable, and built to last.",300.0,4,5,96
-Google Phone,google-phone,"High-quality google phone — perfect for your everyday needs. Durable, reliable, and built to last.",600.0,1,5,79
-LG Dryer,lg-dryer,"High-quality lg dryer — perfect for your everyday needs. Durable, reliable, and built to last.",600.0,4,5,21
-LG Washing Machine,lg-washing-machine,"High-quality lg washing machine — perfect for your everyday needs. Durable, reliable, and built to last.",600.0,4,5,85
-Lightning Charging Cable,lightning-charging-cable,"High-quality lightning charging cable — perfect for your everyday needs. Durable, reliable, and built to last.",14.95,4,5,64
-Macbook Pro Laptop,macbook-pro-laptop,"High-quality macbook pro laptop — perfect for your everyday needs. Durable, reliable, and built to last.",1700.0,2,5,14
-Product,product,"High-quality product — perfect for your everyday needs. Durable, reliable, and built to last.",9.99,4,5,13
-ThinkPad Laptop,thinkpad-laptop,"High-quality thinkpad laptop — perfect for your everyday needs. Durable, reliable, and built to last.",999.99,2,5,21
-USB-C Charging Cable,usb-c-charging-cable,"High-quality usb-c charging cable — perfect for your everyday needs. Durable, reliable, and built to last.",11.95,4,5,37
-Vareebadd Phone,vareebadd-phone,"High-quality vareebadd phone — perfect for your everyday needs. Durable, reliable, and built to last.",400.0,1,5,39
-Wired Headphones,wired-headphones,"High-quality wired headphones — perfect for your everyday needs. Durable, reliable, and built to last.",11.99,3,5,74
-iPhone,iphone,"High-quality iphone — perfect for your everyday needs. Durable, reliable, and built to last.",700.0,1,1,87
+title,price,image_url,category,brand
+Apple iPhone 14 Pro Max 256GB,1099.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Apple
+Samsung Galaxy S23 Ultra 512GB,1199.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Samsung
+Google Pixel 7 Pro 128GB,899.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Google
+Apple MacBook Air M2 8GB 256GB,999.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,Apple
+Dell XPS 13 Plus Laptop,1299.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,Dell
+HP Spectre x360 2-in-1 Laptop,1399.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,HP
+Anker USB C Hub 7-in-1,34.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Anker
+Logitech MX Master 3S Wireless Mouse,99.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Logitech
+Samsung 980 PRO 1TB PCIe NVMe Gen4 SSD,89.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Samsung
+Apple AirPods Pro (2nd Generation),249.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Apple
+Samsung 980 PRO 1TB PCIe NVMe Gen4 SSD - Variant 10,89.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Samsung
+Apple AirPods Pro (2nd Generation) - Variant 11,249.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Apple
+Samsung 980 PRO 1TB PCIe NVMe Gen4 SSD - Variant 12,89.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Samsung
+Samsung Galaxy S23 Ultra 512GB - Variant 13,1199.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Samsung
+Google Pixel 7 Pro 128GB - Variant 14,899.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Google
+Apple iPhone 14 Pro Max 256GB - Variant 15,1099.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Apple
+Logitech MX Master 3S Wireless Mouse - Variant 16,99.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Logitech
+Apple AirPods Pro (2nd Generation) - Variant 17,249.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Apple
+Samsung 980 PRO 1TB PCIe NVMe Gen4 SSD - Variant 18,89.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Samsung
+Google Pixel 7 Pro 128GB - Variant 19,899.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Google
+HP Spectre x360 2-in-1 Laptop - Variant 20,1399.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,HP
+Apple AirPods Pro (2nd Generation) - Variant 21,249.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Apple
+Anker USB C Hub 7-in-1 - Variant 22,34.99,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Anker
+Dell XPS 13 Plus Laptop - Variant 23,1299.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,Dell
+Apple iPhone 14 Pro Max 256GB - Variant 24,1099.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Apple
+Apple iPhone 14 Pro Max 256GB - Variant 25,1099.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,smartphones-tablets,Apple
+Dell XPS 13 Plus Laptop - Variant 26,1299.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,Dell
+Dell XPS 13 Plus Laptop - Variant 27,1299.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,Dell
+Dell XPS 13 Plus Laptop - Variant 28,1299.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,laptops-computers,Dell
+Apple AirPods Pro (2nd Generation) - Variant 29,249.0,https://m.media-amazon.com/images/I/71yzJoE7WlL._AC_SX679_.jpg,accessories,Apple

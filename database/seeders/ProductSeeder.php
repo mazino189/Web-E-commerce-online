@@ -25,6 +25,8 @@ class ProductSeeder extends Seeder
             Log::warning('API seeding returned 0 products due to network timeout or error. Falling back to offline electronics dataset.');
             $this->seedOfflineElectronics();
         }
+
+        $this->seedAmazonScrapedProducts();
     }
 
     private function insertProducts(array $products): void
@@ -258,5 +260,60 @@ class ProductSeeder extends Seeder
         ];
 
         $this->insertProducts($products);
+    }
+
+    private function seedAmazonScrapedProducts(): void
+    {
+        $csvPath = base_path('amazon-data-cleaning/cleaned_data/products.csv');
+        if (!file_exists($csvPath)) {
+            Log::warning("Amazon scraped CSV not found at {$csvPath}");
+            return;
+        }
+
+        if (($handle = fopen($csvPath, 'r')) !== false) {
+            $headers = fgetcsv($handle);
+            if (!$headers) return;
+            
+            while (($data = fgetcsv($handle)) !== false) {
+                if (count($data) !== count($headers)) continue;
+                $row = array_combine($headers, $data);
+
+                $categorySlug = $row['category'] ?? 'accessories';
+                $brandName = $row['brand'] ?? 'Generic';
+                $title = $row['title'] ?? 'Unknown Product';
+                $priceUSD = floatval($row['price'] ?? 0);
+                $imageUrl = $row['image_url'] ?? '';
+
+                if ($priceUSD == 0) continue;
+
+                $priceVND = round($priceUSD * 25400, -3);
+                $brandSlug = Str::slug($brandName);
+
+                $category = Category::firstOrCreate(
+                    ['slug' => $categorySlug],
+                    ['name' => ucwords(str_replace('-', ' ', $categorySlug)), 'description' => 'Amazon Scraped Category', 'status' => true]
+                );
+
+                $brand = Brand::firstOrCreate(
+                    ['slug' => $brandSlug],
+                    ['name' => $brandName, 'status' => true]
+                );
+
+                Product::firstOrCreate(
+                    ['slug' => Str::slug($title)],
+                    [
+                        'name' => $title,
+                        'description' => 'Real Amazon Product Scraping Result.',
+                        'price' => $priceVND,
+                        'stock' => rand(10, 50),
+                        'image' => $imageUrl,
+                        'status' => true,
+                        'category_id' => $category->id,
+                        'brand_id' => $brand->id,
+                    ]
+                );
+            }
+            fclose($handle);
+        }
     }
 }
