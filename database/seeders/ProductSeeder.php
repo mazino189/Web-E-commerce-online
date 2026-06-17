@@ -39,6 +39,7 @@ class ProductSeeder extends Seeder
             );
 
             if ($category && $brand) {
+                $authenticatedImage = $this->verifyAndAuthenticateImage($item['image'], $item['category_slug']);
                 Product::firstOrCreate(
                     ['slug' => $item['slug']],
                     [
@@ -46,7 +47,7 @@ class ProductSeeder extends Seeder
                         'description' => $item['description'],
                         'price' => $item['price'],
                         'stock' => $item['stock'],
-                        'image' => $item['image'],
+                        'image' => $authenticatedImage,
                         'status' => true,
                         'category_id' => $category->id,
                         'brand_id' => $brand->id,
@@ -54,6 +55,37 @@ class ProductSeeder extends Seeder
                 );
             }
         }
+    }
+
+    private function verifyAndAuthenticateImage(string $url, string $categorySlug): string
+    {
+        try {
+            $response = Http::timeout(2)->head($url);
+            if ($response->status() === 200 && str_contains(strtolower($response->header('Content-Type', '')), 'image')) {
+                return $url;
+            }
+            Log::warning("Image authentication failed for {$url} (Status: {$response->status()}). Falling back.");
+        } catch (\Exception $e) {
+            Log::warning("Image authentication error for {$url}: " . $e->getMessage() . ". Falling back.");
+        }
+
+        $fallbacks = [
+            'smartphones-tablets' => 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80&auto=format',
+            'laptops-computers' => 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80&auto=format',
+            'accessories' => 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&q=80&auto=format',
+            'tableware' => 'https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?w=600&q=80&auto=format',
+            'food-storage' => 'https://images.unsplash.com/photo-1585807505190-2ee2e276b6b7?w=600&q=80&auto=format',
+            'kitchen-appliances' => 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&q=80&auto=format',
+            'cookware' => 'https://images.unsplash.com/photo-1584990347449-a6fe0a2ada74?w=600&q=80&auto=format',
+            'baking-tools' => 'https://images.unsplash.com/photo-1586202450849-c18751508215?w=600&q=80&auto=format',
+            'audio-speakers' => 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600&q=80&auto=format',
+            'wearables-smartwatches' => 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&q=80&auto=format',
+            'cameras-photography' => 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80&auto=format',
+            'gaming-gear' => 'https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=600&q=80&auto=format',
+            'peripherals' => 'https://images.unsplash.com/photo-1527814050087-37938154799f?w=600&q=80&auto=format',
+        ];
+
+        return $fallbacks[$categorySlug] ?? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80&auto=format';
     }
 
     private function seedKitchenProducts(): void
@@ -201,6 +233,9 @@ class ProductSeeder extends Seeder
                             ['name' => $brandName, 'status' => true]
                         );
 
+                        $rawImage = $item['thumbnail'] ?? 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&q=80&auto=format';
+                        $authenticatedImage = $this->verifyAndAuthenticateImage($rawImage, $localSlug);
+
                         Product::firstOrCreate(
                             ['slug' => Str::slug($item['title'])],
                             [
@@ -208,7 +243,7 @@ class ProductSeeder extends Seeder
                                 'description' => $item['description'] ?? 'No description available.',
                                 'price' => round((($item['price'] ?? 100) * 25400), -3),
                                 'stock' => $item['stock'] ?? 10,
-                                'image' => $item['thumbnail'] ?? 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&q=80&auto=format',
+                                'image' => $authenticatedImage,
                                 'status' => true,
                                 'category_id' => $category->id,
                                 'brand_id' => $brand->id,
@@ -299,6 +334,8 @@ class ProductSeeder extends Seeder
                     ['name' => $brandName, 'status' => true]
                 );
 
+                $authenticatedImage = $this->verifyAndAuthenticateImage($imageUrl, $categorySlug);
+
                 Product::firstOrCreate(
                     ['slug' => Str::slug($title)],
                     [
@@ -306,7 +343,7 @@ class ProductSeeder extends Seeder
                         'description' => 'Real Amazon Product Scraping Result.',
                         'price' => $priceVND,
                         'stock' => rand(10, 50),
-                        'image' => $imageUrl,
+                        'image' => $authenticatedImage,
                         'status' => true,
                         'category_id' => $category->id,
                         'brand_id' => $brand->id,
