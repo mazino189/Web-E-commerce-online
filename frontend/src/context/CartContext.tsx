@@ -9,6 +9,7 @@ interface Product {
     price: number;
     image: string;
     stock: number;
+    category?: { id: number; name: string; slug: string };
 }
 
 interface CartItem {

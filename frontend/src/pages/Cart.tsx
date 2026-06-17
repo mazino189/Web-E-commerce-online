@@ -47,7 +47,7 @@ export default function Cart() {
                 {items.map((item) => (
                     <div key={item.id} className="flex gap-4 p-4 bg-surface rounded-xl border border-border">
                         <Link to={`/products/${item.product?.slug ?? '#'}`} className="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-900">
-                            <img src={productImage(item.product?.image)} alt={item.product?.name ?? ''} className="w-full h-full object-cover" onError={handleImageError} />
+                            <img src={productImage(item.product?.image, item.product?.category?.slug)} alt={item.product?.name ?? ''} className="w-full h-full object-cover" onError={(e) => handleImageError(e, item.product?.category?.slug)} />
                         </Link>
                         <div className="flex-1 min-w-0">
                             <Link to={`/products/${item.product?.slug ?? '#'}`} className="text-sm font-semibold text-foreground hover:text-accent transition-colors line-clamp-1">
