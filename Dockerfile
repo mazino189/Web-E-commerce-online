@@ -28,6 +28,15 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 WORKDIR /var/www/html
 COPY . .
 
+# Copy the startup script
+COPY start.sh /var/www/html/start.sh
+
+# Fix Windows CRLF line endings to Linux LF
+RUN sed -i -e 's/\r$//' /var/www/html/start.sh
+
+# Grant execute permissions
+RUN chmod +x /var/www/html/start.sh
+
 # Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -38,9 +47,6 @@ RUN npm run build
 
 # Chown necessary directories
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Fix line endings and grant execute permissions for start.sh
-RUN sed -i 's/\r$//' /var/www/html/start.sh && chmod +x /var/www/html/start.sh
 
 # Mở cổng kết nối 80 (Render tự động map)
 EXPOSE 80
