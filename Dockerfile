@@ -45,4 +45,4 @@ RUN sed -i 's/\r$//' /var/www/html/start.sh && chmod +x /var/www/html/start.sh
 # Mở cổng kết nối 80 (Render tự động map)
 EXPOSE 80
 
-CMD ["/var/www/html/start.sh"]
+CMD php artisan migrate --force && php artisan db:seed --force && apache2-foreground
