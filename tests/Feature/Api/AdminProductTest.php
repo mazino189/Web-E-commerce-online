@@ -41,6 +41,7 @@ class AdminProductTest extends TestCase
 
     public function test_admin_can_create_product(): void
     {
+        \Illuminate\Support\Facades\Storage::fake('cloudinary'); // Prevent actual upload if using storage facade
         $response = $this->actingAs($this->admin, 'sanctum')
             ->postJson('/api/admin/products', [
                 'name' => 'Test Product',
@@ -50,6 +51,7 @@ class AdminProductTest extends TestCase
                 'stock' => 10,
                 'category_id' => $this->category->id,
                 'brand_id' => $this->brand->id,
+                'image' => \Illuminate\Http\UploadedFile::fake()->image('product.jpg'),
             ]);
 
         $response->assertStatus(201)

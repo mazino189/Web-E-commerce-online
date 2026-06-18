@@ -19,7 +19,7 @@ class StoreProductRequest extends FormRequest
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
-            'image' => ['nullable', 'string', 'max:255'],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'status' => ['nullable', 'boolean'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'brand_id' => ['required', 'integer', 'exists:brands,id'],

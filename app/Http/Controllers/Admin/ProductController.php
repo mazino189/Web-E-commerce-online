@@ -35,35 +35,24 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(\App\Http\Requests\StoreProductRequest $request)
     {
         // this is store product in database //
-        $request->validate([
-            'name' => 'required|max:255',
-            'slug' => 'required|unique:products',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-        ]);
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $cloudinary = new \Cloudinary\Cloudinary(env('CLOUDINARY_URL'));
+            $uploadedFileUrl = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), ['folder' => 'products'])['secure_url'];
+            $validatedData['image'] = $uploadedFileUrl;
+        }
 
         // product create in database //
-        Product::create([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'category_id' => $request->category_id,
-            'brand_id' => $request->brand_id,
-        ]);
+        Product::create($validatedData);
 
         // redirect to product index with success message //
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Product created successfully');
-        
-
     }
 
     /**
@@ -91,21 +80,20 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(\App\Http\Requests\UpdateProductRequest $request, string $id)
     {
         // this is update product in database //
         $product = Product::findOrFail($id);
-        $request->validate([
-            'name' => 'required|max:255',
-            'slug' => 'required|unique:products,slug,' . $product->id,
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-        ]);
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $cloudinary = new \Cloudinary\Cloudinary(env('CLOUDINARY_URL'));
+            $uploadedFileUrl = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), ['folder' => 'products'])['secure_url'];
+            $validatedData['image'] = $uploadedFileUrl;
+        }
 
         // update product in database //
-        $product->update($request->all());
+        $product->update($validatedData);
 
         // redirect to product index with success message //
         return redirect()
