@@ -17,23 +17,34 @@ class DatabaseSeeder extends Seeder
     {
        // admin user seeding //
        User::firstOrCreate(
-           ['email' => 'admin@gmail.com'],
+           ['email' => 'manager@example.com'],
            [
-               'name' => 'Admin User',
-               'password' => bcrypt('password'),
+               'name' => 'Đồng hồ Classic',
+               'password' => bcrypt('123456'),
                'role' => 'admin',
            ]
        );
         
-        // user seeding //
-        User::firstOrCreate(
-            ['email' => 'John@gmail.com'],
-            [
-                'name' => 'John Doe',
-                'password' => bcrypt('password'),
-                'role' => 'user',
-            ]
-        );
+        // Vietnamese user seeding //
+        $users = [
+            ['name' => 'Lê Thị C', 'email' => 'lethic@gmail.com'],
+            ['name' => 'Phạm Văn D', 'email' => 'phamvand@gmail.com'],
+            ['name' => 'Hoàng Tuấn E', 'email' => 'hoangtuane@gmail.com'],
+            ['name' => 'Ngô Ngọc F', 'email' => 'ngongocf@gmail.com'],
+            ['name' => 'Vũ Đức G', 'email' => 'vuducg@gmail.com'],
+            ['name' => 'Đặng Kim H', 'email' => 'dangkimh@gmail.com'],
+        ];
+
+        foreach ($users as $u) {
+            User::firstOrCreate(
+                ['email' => $u['email']],
+                [
+                    'name' => $u['name'],
+                    'password' => bcrypt('123456'),
+                    'role' => 'user',
+                ]
+            );
+        }
 
         // call other seeders //
         $this->call([
