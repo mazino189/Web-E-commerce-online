@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Ngô Ngọc F', 'email' => 'ngongocf@gmail.com'],
             ['name' => 'Vũ Đức G', 'email' => 'vuducg@gmail.com'],
             ['name' => 'Đặng Kim H', 'email' => 'dangkimh@gmail.com'],
+            ['name' => 'Nguyễn Văn A', 'email' => 'nguyenvana@gmail.com'],
         ];
 
         foreach ($users as $u) {
@@ -51,7 +52,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             BrandSeeder::class,
             ProductSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }
-
