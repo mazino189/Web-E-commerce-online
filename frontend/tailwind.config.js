@@ -7,47 +7,48 @@ export default {
     theme: {
         extend: {
             colors: {
-                canvas: '#020617',
-                surface: '#0F172A',
-                'border': '#1E293B',
+                canvas: '#FAFAF9',
+                surface: '#FFFFFF',
+                'border': '#E5E7EB',
                 accent: {
-                    DEFAULT: '#6366F1',
-                    hover: '#4338CA',
+                    DEFAULT: '#F59E0B',
+                    hover: '#D97706',
+                    light: '#FEF3C7'
                 },
                 cyber: {
-                    DEFAULT: '#22D3EE',
-                    light: '#67E8F9',
+                    DEFAULT: '#1F2937',
+                    light: '#374151',
                 },
                 status: {
-                    in: '#34D399',
-                    low: '#FCD34D',
-                    out: '#FB7185',
+                    in: '#10B981',
+                    low: '#F59E0B',
+                    out: '#EF4444',
                 },
-                foreground: '#F1F5F9',
-                muted: '#64748B',
+                foreground: '#1F2937',
+                muted: '#78716C',
                 'slate': {
-                    950: '#020617',
-                    900: '#0F172A',
-                    800: '#1E293B',
-                    500: '#64748B',
-                    100: '#F1F5F9',
+                    950: '#1C1917',
+                    900: '#292524',
+                    800: '#E7E5E4',
+                    500: '#78716C',
+                    100: '#F5F5F4',
                 },
                 'indigo': {
-                    500: '#6366F1',
-                    700: '#4338CA',
+                    500: '#F59E0B',
+                    700: '#D97706',
                 },
                 'cyan': {
-                    400: '#22D3EE',
-                    300: '#67E8F9',
+                    400: '#1F2937',
+                    300: '#374151',
                 },
                 'emerald': {
-                    400: '#34D399',
+                    400: '#10B981',
                 },
                 'amber': {
-                    300: '#FCD34D',
+                    300: '#F59E0B',
                 },
                 'rose': {
-                    400: '#FB7185',
+                    400: '#EF4444',
                 },
             },
             fontFamily: {

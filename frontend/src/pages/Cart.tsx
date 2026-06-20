@@ -46,7 +46,7 @@ export default function Cart() {
             <div className="space-y-3">
                 {items.map((item) => (
                     <div key={item.id} className="flex gap-4 p-4 bg-surface rounded-xl border border-border">
-                        <Link to={`/products/${item.product?.slug ?? '#'}`} className="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-900">
+                        <Link to={`/products/${item.product?.slug ?? '#'}`} className="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
                             <img src={productImage(item.product?.image, item.product?.category?.slug)} alt={item.product?.name ?? ''} className="w-full h-full object-cover" onError={(e) => handleImageError(e, item.product?.category?.slug)} />
                         </Link>
                         <div className="flex-1 min-w-0">
@@ -59,7 +59,7 @@ export default function Cart() {
                                     <button
                                         onClick={() => item.quantity > 1 && updateItem(item.id, item.quantity - 1)}
                                         disabled={item.quantity <= 1}
-                                        className="p-1 rounded text-muted hover:text-foreground hover:bg-slate-800 disabled:opacity-30 transition-colors"
+                                        className="p-1 rounded text-muted hover:text-foreground hover:bg-gray-100 disabled:opacity-30 transition-colors"
                                     >
                                         <Minus className="w-3.5 h-3.5" />
                                     </button>
@@ -67,7 +67,7 @@ export default function Cart() {
                                     <button
                                         onClick={() => item.quantity < (item.product?.stock ?? 0) && updateItem(item.id, item.quantity + 1)}
                                         disabled={item.quantity >= (item.product?.stock ?? 0)}
-                                        className="p-1 rounded text-muted hover:text-foreground hover:bg-slate-800 disabled:opacity-30 transition-colors"
+                                        className="p-1 rounded text-muted hover:text-foreground hover:bg-gray-100 disabled:opacity-30 transition-colors"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                     </button>
@@ -78,7 +78,7 @@ export default function Cart() {
                                     </span>
                                     <button
                                         onClick={() => removeItem(item.id)}
-                                        className="p-1.5 rounded text-muted hover:text-rose-400 hover:bg-rose-400/10 transition-colors"
+                                        className="p-1.5 rounded text-muted hover:text-rose-400 hover:bg-rose-50 transition-colors"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>
@@ -92,7 +92,7 @@ export default function Cart() {
             <div className="mt-6 p-4 bg-surface rounded-xl border border-border">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-sm text-muted">Subtotal</span>
-                    <span className="text-lg font-bold text-gradient-tech">{formatPrice(subtotal)}</span>
+                    <span className="text-lg font-bold text-accent">{formatPrice(subtotal)}</span>
                 </div>
                 <Link
                     to="/checkout"

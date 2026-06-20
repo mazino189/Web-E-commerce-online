@@ -51,9 +51,9 @@ export default function ProductCard({ product }: { product: Product }) {
     return (
         <Link
             to={`/products/${product.slug}`}
-            className="group block bg-surface rounded-xl border border-border overflow-hidden hover:border-indigo-500 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
+            className="group block bg-surface rounded-2xl border border-border overflow-hidden hover:border-accent hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300"
         >
-            <div className="aspect-[4/3] overflow-hidden bg-slate-900">
+            <div className="aspect-[4/3] overflow-hidden bg-gray-100">
                 <img
                     src={productImage(product.image, product.category?.slug)}
                     alt={product.name}
@@ -62,30 +62,31 @@ export default function ProductCard({ product }: { product: Product }) {
                     onError={(e) => handleImageError(e, product.category?.slug)}
                 />
             </div>
-            <div className="p-4 space-y-2">
-                <span className="inline-block px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-cyan-400 bg-cyan-400/10 rounded-full">
+            <div className="p-5 space-y-2">
+                <span className="inline-block px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-accent bg-accent/10 rounded-full">
                     {product.category?.name ?? ''}
                 </span>
                 <h3 className="text-sm font-semibold text-foreground leading-snug line-clamp-2">
                     {product.name}
                 </h3>
                 <p className="text-xs text-muted">{product.brand?.name ?? ''}</p>
-                <p className="text-base font-bold text-gradient-tech">{formatPrice(product.price)}</p>
-                <div className="flex items-center justify-between pt-1">
+                <p className="text-base font-bold text-accent">{formatPrice(product.price)}</p>
+                <div className="flex items-center justify-between pt-2 mt-2 border-t border-border/50">
                     <span className={`text-[11px] font-medium ${stockStatus.class}`}>
                         {stockStatus.label}
                     </span>
                     <button
                         onClick={handleAddToCart}
                         disabled={product.stock === 0}
-                        className={`p-1.5 rounded-lg transition-all duration-200 ${added
-                                ? 'bg-emerald-400/20 text-emerald-400'
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${added
+                                ? 'bg-status-in/20 text-status-in'
                                 : product.stock === 0
-                                    ? 'bg-rose-400/10 text-rose-400 cursor-not-allowed'
-                                    : 'bg-accent/10 text-accent hover:bg-accent hover:text-white'
+                                    ? 'bg-status-out/10 text-status-out cursor-not-allowed'
+                                    : 'bg-accent text-white hover:bg-accent-hover'
                             }`}
                     >
                         {added ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
+                        {added ? 'Added' : 'Add'}
                     </button>
                 </div>
             </div>

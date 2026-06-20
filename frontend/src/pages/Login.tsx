@@ -16,8 +16,12 @@ export default function Login() {
         setError('');
         setLoading(true);
         try {
-            await login(email, password);
-            navigate('/');
+            const loggedInUser = await login(email, password);
+            if (loggedInUser.role === 'admin') {
+                navigate('/admin/dashboard');
+            } else {
+                navigate('/');
+            }
         } catch (err: any) {
             setError(err.data?.message || 'Invalid credentials');
         } finally {

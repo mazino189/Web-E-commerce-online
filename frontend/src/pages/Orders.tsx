@@ -150,7 +150,7 @@ export default function Orders() {
                             <div className="space-y-2">
                                 {(order.items || []).map((item) => (
                                     <div key={item.id} className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-slate-900 shrink-0">
+                                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                                             <img
                                                 src={productImage(item.product?.image)}
                                                 alt={item.product?.name ?? ''}
@@ -182,7 +182,7 @@ export default function Orders() {
                                     <p className="capitalize">{order.payment_method?.replace('_', ' ')}</p>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <span className="text-sm font-semibold text-gradient-tech">
+                                    <span className="text-sm font-semibold text-accent">
                                         {formatPrice(order.total_amount)}
                                     </span>
                                     {order.status === 'pending' && (

@@ -13,7 +13,7 @@ class CartController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $cartItems = Cart::with('product')
+        $cartItems = Cart::with('product.category')
             ->where('user_id', $request->user()->id)
             ->get();
 

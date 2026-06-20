@@ -57,13 +57,13 @@ export default function ProductDetail() {
         return (
             <div className="max-w-5xl mx-auto px-4 py-12">
                 <div className="animate-pulse flex gap-8">
-                    <div className="w-1/2 aspect-square bg-surface rounded-xl border border-border" />
+                    <div className="w-1/2 aspect-square bg-gray-100 rounded-2xl border border-border" />
                     <div className="w-1/2 space-y-4">
-                        <div className="h-4 w-16 bg-surface rounded" />
-                        <div className="h-8 w-3/4 bg-surface rounded" />
-                        <div className="h-4 w-1/3 bg-surface rounded" />
-                        <div className="h-6 w-1/4 bg-surface rounded" />
-                        <div className="h-20 w-full bg-surface rounded" />
+                        <div className="h-4 w-16 bg-gray-200 rounded" />
+                        <div className="h-8 w-3/4 bg-gray-200 rounded" />
+                        <div className="h-4 w-1/3 bg-gray-200 rounded" />
+                        <div className="h-6 w-1/4 bg-gray-200 rounded" />
+                        <div className="h-20 w-full bg-gray-200 rounded" />
                     </div>
                 </div>
             </div>
@@ -82,10 +82,10 @@ export default function ProductDetail() {
     }
 
     const stockStatus = product.stock > 5
-        ? { label: 'In Stock', class: 'text-status-in bg-emerald-400/10' }
+        ? { label: 'In Stock', class: 'text-status-in bg-status-in/10' }
         : product.stock > 0
-            ? { label: 'Low Stock', class: 'text-status-low bg-amber-300/10' }
-            : { label: 'Out of Stock', class: 'text-status-out bg-rose-400/10' };
+            ? { label: 'Low Stock', class: 'text-status-low bg-status-low/10' }
+            : { label: 'Out of Stock', class: 'text-status-out bg-status-out/10' };
 
     return (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
@@ -94,7 +94,7 @@ export default function ProductDetail() {
             </Link>
 
             <div className="grid md:grid-cols-2 gap-8">
-                <div className="aspect-square rounded-xl overflow-hidden bg-surface border border-border">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-border">
                     <img
                         src={productImage(product.image, product.category?.slug)}
                         alt={product.name}
@@ -105,7 +105,7 @@ export default function ProductDetail() {
 
                 <div className="space-y-5">
                     <div className="flex items-center gap-3">
-                        <span className="px-3 py-1 text-xs font-medium uppercase tracking-wider text-cyan-400 bg-cyan-400/10 rounded-full">
+                        <span className="px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent bg-accent/10 rounded-full">
                             {product.category?.name ?? ''}
                         </span>
                         <span className="text-xs text-muted">{product.brand?.name ?? ''}</span>
@@ -115,7 +115,7 @@ export default function ProductDetail() {
                         {product.name}
                     </h1>
 
-                    <p className="text-3xl font-bold text-gradient-tech">
+                    <p className="text-3xl font-bold text-accent">
                         {formatPrice(product.price)}
                     </p>
 
@@ -136,7 +136,7 @@ export default function ProductDetail() {
                         <button
                             onClick={handleAddToCart}
                             className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${added
-                                    ? 'bg-emerald-400/20 text-emerald-400 border border-emerald-400/30'
+                                    ? 'bg-status-in/10 text-status-in border border-status-in/30'
                                     : 'bg-accent text-white hover:bg-accent-hover'
                                 }`}
                         >

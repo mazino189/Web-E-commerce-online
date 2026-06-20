@@ -39,8 +39,8 @@ export default function Checkout() {
     if (success) {
         return (
             <div className="max-w-lg mx-auto px-4 py-20 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-400/10 flex items-center justify-center">
-                    <Check className="w-8 h-8 text-emerald-400" />
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-status-in/10 flex items-center justify-center">
+                    <Check className="w-8 h-8 text-status-in" />
                 </div>
                 <h2 className="text-xl font-bold text-foreground mb-2">Order Placed!</h2>
                 <p className="text-sm text-muted">Your order has been confirmed. Redirecting...</p>
@@ -110,7 +110,7 @@ export default function Checkout() {
                     </div>
                     <div className="flex items-center justify-between pt-3 border-t border-border mt-3">
                         <span className="text-base font-semibold text-foreground">Total</span>
-                        <span className="text-xl font-bold text-gradient-tech">{formatPrice(subtotal)}</span>
+                        <span className="text-xl font-bold text-accent">{formatPrice(subtotal)}</span>
                     </div>
                 </div>
 
