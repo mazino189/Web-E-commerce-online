@@ -1,26 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import api from '../apiClient';
-import { Package, Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import { Package, Plus, Search, Edit2, Trash2, X, Upload } from 'lucide-react';
 
 interface Product {
     id: number;
     name: string;
+    description: string;
     price: number;
     stock: number;
     status: string;
-    category?: { name: string };
-    brand?: { name: string };
+    image?: string;
+    category_id: number;
+    brand_id: number;
+    category?: { id: number; name: string };
+    brand?: { id: number; name: string };
 }
+
+interface Category { id: number; name: string; }
+interface Brand { id: number; name: string; }
 
 export default function AdminProducts() {
     const [products, setProducts] = useState<Product[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const formRef = useRef<HTMLFormElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
-        api.get<{ data: Product[] }>('/admin/products')
-            .then(res => setProducts(res.data || []))
-            .finally(() => setLoading(false));
+        Promise.all([
+            api.get<{ data: Product[] }>('/admin/products'),
+            api.get<{ data: Category[] }>('/admin/categories'),
+            api.get<{ data: Brand[] }>('/admin/brands')
+        ]).then(([pRes, cRes, bRes]) => {
+            setProducts(pRes.data || []);
+            setCategories(cRes.data || []);
+            setBrands(bRes.data || []);
+        }).finally(() => setLoading(false));
     }, []);
 
     const formatPrice = (vnd: number) => new Intl.NumberFormat('vi-VN').format(vnd) + '₫';
@@ -35,6 +57,41 @@ export default function AdminProducts() {
         }
     };
 
+    const handleOpenModal = (product?: Product) => {
+        setEditingProduct(product || null);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setEditingProduct(null);
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const formData = new FormData(e.currentTarget);
+        
+        try {
+            if (editingProduct) {
+                // Method spoofing for PUT since FormData with file works better with POST + _method=PUT in Laravel
+                formData.append('_method', 'PUT');
+                const res = await api.post<{ data: Product }>(`/admin/products/${editingProduct.id}`, formData);
+                setProducts(products.map(p => p.id === editingProduct.id ? res.data : p));
+            } else {
+                const res = await api.post<{ data: Product }>('/admin/products', formData);
+                setProducts([res.data, ...products]);
+            }
+            handleCloseModal();
+        } catch (err) {
+            console.error('Failed to save product', err);
+            alert('Failed to save product. Please check inputs.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     const filteredProducts = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
@@ -44,7 +101,10 @@ export default function AdminProducts() {
                     <h1 className="text-2xl font-bold text-foreground">Products</h1>
                     <p className="text-sm text-muted">Manage your store's inventory.</p>
                 </div>
-                <button className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors">
+                <button 
+                    onClick={() => handleOpenModal()}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors"
+                >
                     <Plus className="w-4 h-4" /> Add Product
                 </button>
             </div>
@@ -67,11 +127,11 @@ export default function AdminProducts() {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="border-b border-border bg-gray-50 text-xs text-muted uppercase tracking-wider">
+                                <th className="px-6 py-4 font-medium">Image</th>
                                 <th className="px-6 py-4 font-medium">Name</th>
                                 <th className="px-6 py-4 font-medium">Category / Brand</th>
                                 <th className="px-6 py-4 font-medium">Price</th>
                                 <th className="px-6 py-4 font-medium">Stock</th>
-                                <th className="px-6 py-4 font-medium">Status</th>
                                 <th className="px-6 py-4 font-medium text-right">Actions</th>
                             </tr>
                         </thead>
@@ -90,6 +150,11 @@ export default function AdminProducts() {
                             ) : (
                                 filteredProducts.map((product) => (
                                     <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="px-6 py-4">
+                                            <div className="w-12 h-12 rounded bg-gray-100 overflow-hidden">
+                                                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} className="w-full h-full object-cover" />
+                                            </div>
+                                        </td>
                                         <td className="px-6 py-4 text-sm font-medium text-foreground">{product.name}</td>
                                         <td className="px-6 py-4 text-sm text-muted">
                                             {product.category?.name || 'N/A'} <br/>
@@ -97,15 +162,8 @@ export default function AdminProducts() {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-foreground">{formatPrice(product.price)}</td>
                                         <td className="px-6 py-4 text-sm text-foreground">{product.stock}</td>
-                                        <td className="px-6 py-4 text-sm">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                product.status === 'active' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-rose-400/10 text-rose-400'
-                                            }`}>
-                                                {product.status}
-                                            </span>
-                                        </td>
                                         <td className="px-6 py-4 text-sm text-right space-x-3">
-                                            <button className="text-muted hover:text-accent transition-colors">
+                                            <button onClick={() => handleOpenModal(product)} className="text-muted hover:text-accent transition-colors">
                                                 <Edit2 className="w-4 h-4 inline" />
                                             </button>
                                             <button onClick={() => handleDelete(product.id)} className="text-muted hover:text-rose-400 transition-colors">
@@ -119,6 +177,145 @@ export default function AdminProducts() {
                     </table>
                 </div>
             </div>
+
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+                    <div className="bg-surface rounded-xl border border-border w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                        <div className="flex items-center justify-between p-6 border-b border-border">
+                            <h2 className="text-xl font-semibold text-foreground">
+                                {editingProduct ? 'Edit Product' : 'Add New Product'}
+                            </h2>
+                            <button onClick={handleCloseModal} className="text-muted hover:text-foreground transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form ref={formRef} onSubmit={handleSubmit} className="p-6 space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-sm font-medium text-foreground">Name</label>
+                                    <input 
+                                        type="text" 
+                                        name="name" 
+                                        required 
+                                        defaultValue={editingProduct?.name}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                    />
+                                </div>
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-sm font-medium text-foreground">Description</label>
+                                    <textarea 
+                                        name="description" 
+                                        required 
+                                        rows={3}
+                                        defaultValue={editingProduct?.description}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent resize-none"
+                                    ></textarea>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-foreground">Price (VND)</label>
+                                    <input 
+                                        type="number" 
+                                        name="price" 
+                                        min="0"
+                                        required 
+                                        defaultValue={editingProduct?.price}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-foreground">Stock</label>
+                                    <input 
+                                        type="number" 
+                                        name="stock" 
+                                        min="0"
+                                        required 
+                                        defaultValue={editingProduct?.stock}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-foreground">Category</label>
+                                    <select 
+                                        name="category_id" 
+                                        required
+                                        defaultValue={editingProduct?.category_id || ''}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                    >
+                                        <option value="" disabled>Select Category</option>
+                                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-foreground">Brand</label>
+                                    <select 
+                                        name="brand_id" 
+                                        required
+                                        defaultValue={editingProduct?.brand_id || ''}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                    >
+                                        <option value="" disabled>Select Brand</option>
+                                        {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-foreground">Status</label>
+                                    <select 
+                                        name="status" 
+                                        required
+                                        defaultValue={editingProduct?.status || 'active'}
+                                        className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                    >
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-foreground">Product Image</label>
+                                    <div className="flex items-center gap-3">
+                                        <button 
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="px-4 py-2 border border-border rounded-lg text-sm text-muted hover:text-foreground hover:border-accent transition-colors flex items-center gap-2"
+                                        >
+                                            <Upload className="w-4 h-4" /> Upload Image
+                                        </button>
+                                        <input 
+                                            ref={fileInputRef}
+                                            type="file" 
+                                            name="image" 
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={(e) => {
+                                                const fileName = e.target.files?.[0]?.name;
+                                                if (fileName) alert(`Selected: ${fileName}`);
+                                            }}
+                                        />
+                                        <span className="text-xs text-muted">Max 2MB (JPG, PNG)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex justify-end gap-3 pt-6 border-t border-border">
+                                <button 
+                                    type="button" 
+                                    onClick={handleCloseModal}
+                                    className="px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    disabled={isSubmitting}
+                                    className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors disabled:opacity-50"
+                                >
+                                    {isSubmitting ? 'Saving...' : 'Save Product'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

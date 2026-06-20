@@ -10,7 +10,6 @@ async function request<T = unknown>(endpoint: string, options: RequestInit = {})
 
     const config: RequestInit = {
         headers: {
-            'Content-Type': 'application/json',
             'Accept': 'application/json',
             ...(token && { Authorization: `Bearer ${token}` }),
             ...(options.headers as Record<string, string>),
@@ -20,6 +19,7 @@ async function request<T = unknown>(endpoint: string, options: RequestInit = {})
 
     if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
         config.body = JSON.stringify(config.body);
+        (config.headers as Record<string, string>)['Content-Type'] = 'application/json';
     }
 
     const response = await fetch(`${API_BASE}${endpoint}`, config);

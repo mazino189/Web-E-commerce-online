@@ -17,6 +17,10 @@ import AdminProducts from './pages/AdminProducts';
 import AdminCategories from './pages/AdminCategories';
 import AdminBrands from './pages/AdminBrands';
 
+import AdminOrders from './pages/AdminOrders';
+import AdminCustomers from './pages/AdminCustomers';
+import ContactSupport from './pages/ContactSupport';
+
 export default function App() {
     return (
         <BrowserRouter>
@@ -30,6 +34,8 @@ export default function App() {
                                 <Route path="products" element={<AdminProducts />} />
                                 <Route path="categories" element={<AdminCategories />} />
                                 <Route path="brands" element={<AdminBrands />} />
+                                <Route path="orders" element={<AdminOrders />} />
+                                <Route path="customers" element={<AdminCustomers />} />
                             </Route>
 
                             {/* Public/User Routes */}
@@ -45,6 +51,7 @@ export default function App() {
                                             <Route path="/login" element={<Login />} />
                                             <Route path="/orders" element={<Orders />} />
                                             <Route path="/register" element={<Register />} />
+                                            <Route path="/support" element={<ContactSupport />} />
                                         </Routes>
                                     </main>
                                     <Footer />

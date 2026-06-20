@@ -45,7 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Admin
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/stats', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'stats']);
     Route::apiResource('products', AdminProductController::class);
     Route::apiResource('categories', AdminCategoryController::class);
     Route::apiResource('brands', AdminBrandController::class);
+    Route::apiResource('orders', \App\Http\Controllers\Api\Admin\OrderController::class)->only(['index', 'update']);
+    Route::apiResource('users', \App\Http\Controllers\Api\Admin\UserController::class)->except(['store', 'show']);
 });
