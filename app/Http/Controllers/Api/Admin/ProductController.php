@@ -54,6 +54,8 @@ class ProductController extends Controller
                 $cloudinary = new \Cloudinary\Cloudinary(env('CLOUDINARY_URL'));
                 $data['image'] = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), ['folder' => 'products'])['secure_url'];
             }
+        } else {
+            unset($data['image']);
         }
         $product->update($data);
         $product->load(['category', 'brand']);
