@@ -7,6 +7,8 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 
 class CategoryController extends Controller
 {
@@ -17,7 +19,31 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request)
     {
-        $category = Category::create($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            Configuration::instance([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME', 'demo'),
+                    'api_key'    => env('CLOUDINARY_API_KEY', 'demo'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET', 'demo'),
+                ],
+                'url' => ['secure' => true]
+            ]);
+
+            $uploadApi = new UploadApi();
+            $result = $uploadApi->upload($request->file('image')->getRealPath(), [
+                'folder' => 'categories',
+                'transformation' => [
+                    'width' => 800,
+                    'height' => 800,
+                    'crop' => 'limit'
+                ]
+            ]);
+            $validated['image'] = $result['secure_url'];
+        }
+
+        $category = Category::create($validated);
 
         return CategoryResource::make($category)
             ->response()
@@ -31,7 +57,31 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request, Category $category): CategoryResource
     {
-        $category->update($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            Configuration::instance([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME', 'demo'),
+                    'api_key'    => env('CLOUDINARY_API_KEY', 'demo'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET', 'demo'),
+                ],
+                'url' => ['secure' => true]
+            ]);
+
+            $uploadApi = new UploadApi();
+            $result = $uploadApi->upload($request->file('image')->getRealPath(), [
+                'folder' => 'categories',
+                'transformation' => [
+                    'width' => 800,
+                    'height' => 800,
+                    'crop' => 'limit'
+                ]
+            ]);
+            $validated['image'] = $result['secure_url'];
+        }
+
+        $category->update($validated);
 
         return new CategoryResource($category->fresh());
     }

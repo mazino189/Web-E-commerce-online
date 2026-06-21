@@ -20,6 +20,11 @@ import AdminBrands from './pages/AdminBrands';
 import AdminOrders from './pages/AdminOrders';
 import AdminCustomers from './pages/AdminCustomers';
 import ContactSupport from './pages/ContactSupport';
+import AboutUs from './pages/AboutUs';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import EditProfile from './pages/profile/EditProfile';
+import ChangePassword from './pages/profile/ChangePassword';
+import EditAvatar from './pages/profile/EditAvatar';
 
 export default function App() {
     return (
@@ -52,6 +57,11 @@ export default function App() {
                                             <Route path="/orders" element={<Orders />} />
                                             <Route path="/register" element={<Register />} />
                                             <Route path="/support" element={<ContactSupport />} />
+                                            <Route path="/about-us" element={<AboutUs />} />
+                                            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                                            <Route path="/profile" element={<EditProfile />} />
+                                            <Route path="/profile/password" element={<ChangePassword />} />
+                                            <Route path="/profile/avatar" element={<EditAvatar />} />
                                         </Routes>
                                     </main>
                                     <Footer />

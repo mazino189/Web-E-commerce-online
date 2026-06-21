@@ -33,17 +33,6 @@ class DatabaseSeeder extends Seeder
                'role' => 'admin',
            ]
        );
-        
-        // Vietnamese user seeding //
-        $users = [
-            ['name' => 'Lê Thị C', 'email' => 'lethic@gmail.com'],
-            ['name' => 'Phạm Văn D', 'email' => 'phamvand@gmail.com'],
-            ['name' => 'Hoàng Tuấn E', 'email' => 'hoangtuane@gmail.com'],
-            ['name' => 'Ngô Ngọc F', 'email' => 'ngongocf@gmail.com'],
-            ['name' => 'Vũ Đức G', 'email' => 'vuducg@gmail.com'],
-            ['name' => 'Đặng Kim H', 'email' => 'dangkimh@gmail.com'],
-            ['name' => 'Nguyễn Văn A', 'email' => 'nguyenvana@gmail.com'],
-        ];
 
         foreach ($users as $u) {
             User::firstOrCreate(

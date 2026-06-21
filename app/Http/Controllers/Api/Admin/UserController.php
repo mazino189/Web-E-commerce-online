@@ -11,10 +11,29 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Only return users, not admins (or maybe return all to allow admin to see admins, but user requirement says "list all registered users (role = 'user')")
-        $users = User::where('role', 'user')->latest()->paginate(12);
+        // Return both admins and users to allow managing admins
+        $users = User::latest()->paginate(12);
         
         return response()->json($users);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
+            'password' => ['required', 'string', 'min:8'],
+            'role' => ['required', 'string', Rule::in(['user', 'admin'])],
+        ]);
+
+        $validated['password'] = \Illuminate\Support\Facades\Hash::make($validated['password']);
+
+        $user = User::create($validated);
+
+        return response()->json([
+            'data' => $user,
+            'message' => 'User created successfully.'
+        ], 201);
     }
 
     public function update(Request $request, User $user)

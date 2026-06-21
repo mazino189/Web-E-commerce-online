@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -26,6 +27,11 @@ Route::get('/brands/{brand}', [BrandController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
+
+    // Profile
+    Route::put('/profile', [ProfileController::class, 'updateProfile']);
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar']);
 
     // Cart
     Route::get('/cart', [CartController::class, 'index']);
@@ -50,5 +56,5 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::apiResource('categories', AdminCategoryController::class);
     Route::apiResource('brands', AdminBrandController::class);
     Route::apiResource('orders', \App\Http\Controllers\Api\Admin\OrderController::class)->only(['index', 'update']);
-    Route::apiResource('users', \App\Http\Controllers\Api\Admin\UserController::class)->except(['store', 'show']);
+    Route::apiResource('users', \App\Http\Controllers\Api\Admin\UserController::class)->except(['show']);
 });

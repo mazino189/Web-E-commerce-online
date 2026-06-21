@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Menu, X, Zap, Package, Search } from 'lucide-react';
+import { ShoppingCart, LogOut, Menu, X, Zap, Search, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -8,6 +8,8 @@ export default function Navbar() {
     const { user, logout } = useAuth();
     const { count } = useCart();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -22,15 +24,27 @@ export default function Navbar() {
         }
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const userInitials = user?.name?.substring(0, 2).toUpperCase() || 'VT';
+
     return (
-        <nav className="sticky top-0 z-50 bg-white border-b border-border">
+        <nav className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 gap-4">
                     {/* LOGO */}
                     <Link to="/" className="flex items-center gap-2 group shrink-0">
-                        <Zap className="w-6 h-6 text-foreground group-hover:text-accent transition-colors" />
-                        <span className="text-lg font-bold text-foreground tracking-tight">
-                            VOLTAIRE<span className="text-accent">/</span>TECH
+                        <Zap className="w-6 h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                        <span className="text-xl font-bold text-slate-100 tracking-tight font-mono">
+                            VOLTAIRE<span className="text-cyan-400">/</span>TECH
                         </span>
                     </Link>
 
@@ -42,53 +56,100 @@ export default function Navbar() {
                                 placeholder="Search products..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 bg-canvas border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+                                className="w-full pl-10 pr-4 py-2 bg-slate-800/50 border border-slate-700 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-500"
                             />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                         </form>
                     </div>
 
                     {/* CART & USER */}
                     <div className="hidden md:flex items-center gap-6 shrink-0">
+                        <Link
+                            to="/cart"
+                            className="relative text-slate-400 hover:text-cyan-400 transition-colors"
+                        >
+                            <ShoppingCart className="w-5 h-5" />
+                            {count > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+                                    {count > 9 ? '9+' : count}
+                                </span>
+                            )}
+                        </Link>
+
                         {user ? (
-                            <>
-                                {user.role === 'admin' && (
-                                    <Link to="/admin/dashboard" className="text-sm font-medium text-accent hover:text-accent-hover transition-colors">
-                                        Admin Panel
-                                    </Link>
-                                )}
-                                <Link
-                                    to="/orders"
-                                    className="text-muted hover:text-foreground transition-colors"
+                            <div className="relative" ref={dropdownRef}>
+                                <button 
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                    className="flex items-center gap-2 focus:outline-none"
                                 >
-                                    <Package className="w-5 h-5" />
-                                </Link>
-                                <Link
-                                    to="/cart"
-                                    className="relative text-muted hover:text-foreground transition-colors"
-                                >
-                                    <ShoppingCart className="w-5 h-5" />
-                                    {count > 0 && (
-                                        <span className="absolute -top-2 -right-2 bg-accent text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                                            {count > 9 ? '9+' : count}
-                                        </span>
-                                    )}
-                                </Link>
-                                <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                                    <User className="w-4 h-4 text-muted" />
-                                    {user.name}
-                                </div>
-                                <button
-                                    onClick={logout}
-                                    className="text-muted hover:text-rose-400 transition-colors"
-                                >
-                                    <LogOut className="w-5 h-5" />
+                                    <div className="w-9 h-9 rounded-full bg-slate-800 border-2 border-slate-700 overflow-hidden flex items-center justify-center shadow-lg hover:border-cyan-500 transition-colors">
+                                        {user.avatar ? (
+                                            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-xs font-bold text-cyan-400">{userInitials}</span>
+                                        )}
+                                    </div>
+                                    <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
                                 </button>
-                            </>
+
+                                {dropdownOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden py-1">
+                                        <div className="px-4 py-2 border-b border-slate-800 mb-1">
+                                            <p className="text-sm font-medium text-slate-200 truncate">{user.name}</p>
+                                            <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                                        </div>
+                                        <Link 
+                                            to="/profile" 
+                                            onClick={() => setDropdownOpen(false)}
+                                            className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors"
+                                        >
+                                            Edit Profile
+                                        </Link>
+                                        <Link 
+                                            to="/profile/avatar" 
+                                            onClick={() => setDropdownOpen(false)}
+                                            className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors"
+                                        >
+                                            Change Avatar
+                                        </Link>
+                                        <Link 
+                                            to="/profile/password" 
+                                            onClick={() => setDropdownOpen(false)}
+                                            className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors"
+                                        >
+                                            Change Password
+                                        </Link>
+                                        <Link 
+                                            to="/orders" 
+                                            onClick={() => setDropdownOpen(false)}
+                                            className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-cyan-400 transition-colors"
+                                        >
+                                            My Orders
+                                        </Link>
+                                        {user.role === 'admin' && (
+                                            <Link 
+                                                to="/admin/dashboard" 
+                                                onClick={() => setDropdownOpen(false)}
+                                                className="block px-4 py-2 text-sm font-medium text-fuchsia-400 hover:bg-slate-800 transition-colors"
+                                            >
+                                                Admin Panel
+                                            </Link>
+                                        )}
+                                        <div className="border-t border-slate-800 mt-1 pt-1">
+                                            <button 
+                                                onClick={() => { logout(); setDropdownOpen(false); }}
+                                                className="w-full text-left px-4 py-2 text-sm text-rose-400 hover:bg-slate-800 transition-colors flex items-center gap-2"
+                                            >
+                                                <LogOut className="w-4 h-4" /> Sign Out
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             <Link
                                 to="/login"
-                                className="px-5 py-2 text-sm font-medium text-white bg-accent rounded-xl hover:bg-accent-hover transition-colors"
+                                className="px-5 py-2 text-sm font-medium text-slate-900 bg-cyan-400 rounded-xl hover:bg-cyan-300 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.4)] hover:shadow-[0_0_25px_rgba(34,211,238,0.6)]"
                             >
                                 Sign In
                             </Link>
@@ -96,7 +157,7 @@ export default function Navbar() {
                     </div>
 
                     <button
-                        className="md:hidden text-muted hover:text-foreground shrink-0"
+                        className="md:hidden text-slate-400 hover:text-slate-200 shrink-0"
                         onClick={() => setMenuOpen(!menuOpen)}
                     >
                         {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -111,39 +172,54 @@ export default function Navbar() {
                             placeholder="Search products..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 bg-canvas border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
+                            className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors"
                         />
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                     </form>
                 </div>
             </div>
 
             {menuOpen && (
-                <div className="md:hidden border-t border-border bg-white">
+                <div className="md:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur-md">
                     <div className="px-4 py-4 space-y-4">
-                        <Link to="/" className="block text-foreground font-medium text-sm" onClick={() => setMenuOpen(false)}>
+                        <Link to="/" className="block text-slate-300 font-medium text-sm" onClick={() => setMenuOpen(false)}>
                             Products
                         </Link>
                         {user ? (
                             <>
+                                <Link to="/profile" className="block text-slate-300 text-sm" onClick={() => setMenuOpen(false)}>
+                                    Edit Profile
+                                </Link>
+                                <Link to="/orders" className="block text-slate-300 text-sm" onClick={() => setMenuOpen(false)}>
+                                    My Orders
+                                </Link>
+                                <Link to="/cart" className="block text-slate-300 text-sm" onClick={() => setMenuOpen(false)}>
+                                    Cart {count > 0 && <span className="text-cyan-400">({count})</span>}
+                                </Link>
                                 {user.role === 'admin' && (
-                                    <Link to="/admin/dashboard" className="block text-accent font-medium text-sm" onClick={() => setMenuOpen(false)}>
+                                    <Link to="/admin/dashboard" className="block text-fuchsia-400 font-medium text-sm" onClick={() => setMenuOpen(false)}>
                                         Admin Panel
                                     </Link>
                                 )}
-                                <Link to="/orders" className="block text-foreground text-sm" onClick={() => setMenuOpen(false)}>
-                                    My Orders
-                                </Link>
-                                <Link to="/cart" className="block text-foreground text-sm" onClick={() => setMenuOpen(false)}>
-                                    Cart {count > 0 && `(${count})`}
-                                </Link>
-                                <button onClick={() => { logout(); setMenuOpen(false); }} className="block text-sm text-rose-400 font-medium">
+                                <button onClick={() => { logout(); setMenuOpen(false); }} className="block text-sm text-rose-400 font-medium w-full text-left">
                                     Sign Out
                                 </button>
-                                <p className="text-xs text-muted">{user.email}</p>
+                                <div className="border-t border-slate-800 pt-3 flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden">
+                                        {user.avatar ? (
+                                            <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-[10px] font-bold text-cyan-400">{userInitials}</span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-slate-200 leading-none">{user.name}</p>
+                                        <p className="text-xs text-slate-500 mt-1 leading-none">{user.email}</p>
+                                    </div>
+                                </div>
                             </>
                         ) : (
-                            <Link to="/login" className="block text-sm font-medium text-accent" onClick={() => setMenuOpen(false)}>
+                            <Link to="/login" className="block text-sm font-medium text-cyan-400" onClick={() => setMenuOpen(false)}>
                                 Sign In
                             </Link>
                         )}

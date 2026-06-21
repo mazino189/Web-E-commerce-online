@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../apiClient';
-import { Users, Search, Edit2, Trash2, X } from 'lucide-react';
+import { Users, Search, Edit2, Trash2, X, Plus } from 'lucide-react';
 
 interface User {
     id: number;
@@ -17,6 +17,7 @@ export default function AdminCustomers() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState<User | null>(null);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
@@ -74,6 +75,24 @@ export default function AdminCustomers() {
         }
     };
 
+    const handleCreateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            await api.post('/admin/users', data);
+            fetchCustomers();
+            setIsCreateModalOpen(false);
+        } catch (err: any) {
+            console.error('Failed to create user', err);
+            alert(err?.response?.data?.message || 'Failed to create user.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     const filteredCustomers = customers.filter(c => 
         c.name.toLowerCase().includes(search.toLowerCase()) || 
         c.email.toLowerCase().includes(search.toLowerCase())
@@ -83,9 +102,15 @@ export default function AdminCustomers() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground">Customers</h1>
-                    <p className="text-sm text-muted">Manage your registered users.</p>
+                    <h1 className="text-2xl font-bold text-foreground">Users & Admins</h1>
+                    <p className="text-sm text-muted">Manage your registered users and staff.</p>
                 </div>
+                <button 
+                    onClick={() => setIsCreateModalOpen(true)}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors shadow-lg"
+                >
+                    <Plus className="w-4 h-4" /> Add User
+                </button>
             </div>
 
             <div className="bg-surface border border-border rounded-xl overflow-hidden flex flex-col">
@@ -216,6 +241,79 @@ export default function AdminCustomers() {
                                     className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors disabled:opacity-50"
                                 >
                                     {isSubmitting ? 'Saving...' : 'Save Changes'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+            {/* Create Modal */}
+            {isCreateModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+                    <div className="bg-surface rounded-xl border border-border w-full max-w-md">
+                        <div className="flex items-center justify-between p-6 border-b border-border">
+                            <h2 className="text-xl font-semibold text-foreground">Add New User</h2>
+                            <button onClick={() => setIsCreateModalOpen(false)} className="text-muted hover:text-foreground transition-colors">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleCreateSubmit} className="p-6 space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-foreground">Name</label>
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    required 
+                                    className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-foreground">Email</label>
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    required 
+                                    className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-foreground">Password</label>
+                                <input 
+                                    type="password" 
+                                    name="password" 
+                                    required
+                                    minLength={8}
+                                    className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-foreground">Role</label>
+                                <select 
+                                    name="role" 
+                                    required 
+                                    defaultValue="user"
+                                    className="w-full px-3 py-2 bg-canvas border border-border rounded-lg text-sm text-foreground focus:outline-none focus:border-accent"
+                                >
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            
+                            <div className="flex justify-end gap-3 pt-4 border-t border-border mt-6">
+                                <button 
+                                    type="button" 
+                                    onClick={() => setIsCreateModalOpen(false)}
+                                    className="px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    disabled={isSubmitting}
+                                    className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors disabled:opacity-50"
+                                >
+                                    {isSubmitting ? 'Creating...' : 'Create User'}
                                 </button>
                             </div>
                         </form>
