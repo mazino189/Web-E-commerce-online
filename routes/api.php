@@ -11,10 +11,14 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\ContactMessageController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+// Support
+Route::post('/support/contact', [ContactMessageController::class, 'store']);
 
 // Catalog
 Route::get('/products', [ProductController::class, 'index']);
@@ -57,4 +61,8 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::apiResource('brands', AdminBrandController::class);
     Route::apiResource('orders', \App\Http\Controllers\Api\Admin\OrderController::class)->only(['index', 'update']);
     Route::apiResource('users', \App\Http\Controllers\Api\Admin\UserController::class)->except(['show']);
+
+    // Support
+    Route::get('/support', [ContactMessageController::class, 'index']);
+    Route::put('/support/{id}/resolve', [ContactMessageController::class, 'resolve']);
 });

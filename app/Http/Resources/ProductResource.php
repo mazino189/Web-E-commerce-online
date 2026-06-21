@@ -15,6 +15,8 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'price' => (float) $this->price,
+            'discount_percentage' => $this->discount_percentage,
+            'sale_price' => $this->discount_percentage ? (float) $this->price * (1 - $this->discount_percentage / 100) : (float) $this->price,
             'stock' => $this->stock,
             'image' => str_starts_with($this->image ?? '', 'http') ? $this->image : secure_asset($this->image),
             'status' => $this->status,

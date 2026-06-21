@@ -27,6 +27,22 @@ class ProductController extends Controller
             $query->where('brand_id', $brandId);
         }
 
+        if ($categorySlug = $request->get('category_slug')) {
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        if ($brandSlug = $request->get('brand_slug')) {
+            $query->whereHas('brand', function ($q) use ($brandSlug) {
+                $q->where('slug', $brandSlug);
+            });
+        }
+
+        if ($request->boolean('on_sale')) {
+            $query->whereNotNull('discount_percentage')->where('discount_percentage', '>', 0);
+        }
+
         if ($minPrice = $request->get('min_price')) {
             $query->where('price', '>=', $minPrice);
         }

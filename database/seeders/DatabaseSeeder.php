@@ -34,16 +34,14 @@ class DatabaseSeeder extends Seeder
            ]
        );
 
-        foreach ($users as $u) {
-            User::firstOrCreate(
-                ['email' => $u['email']],
-                [
-                    'name' => $u['name'],
-                    'password' => bcrypt('123456'),
-                    'role' => 'user',
-                ]
-            );
-        }
+        User::firstOrCreate(
+            ['email' => 'john@gmail.com'],
+            [
+                'name' => 'John',
+                'password' => bcrypt('password'),
+                'role' => 'user',
+            ]
+        );
 
         // call other seeders //
         $this->call([

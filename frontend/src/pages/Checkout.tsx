@@ -85,22 +85,36 @@ export default function Checkout() {
 
                 <div className="p-5 bg-surface rounded-xl border border-border space-y-3">
                     <h2 className="text-sm font-semibold text-foreground">Payment Method</h2>
-                    <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${paymentMethod === 'cod' ? 'border-accent bg-accent/5' : 'border-border'}`}>
-                        <input type="radio" name="payment" value="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-accent" />
-                        <Building2 className="w-5 h-5 text-muted" />
-                        <div>
-                            <p className="text-sm text-foreground">Cash on Delivery</p>
-                            <p className="text-xs text-muted">Pay when you receive</p>
-                        </div>
-                    </label>
-                    <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${paymentMethod === 'bank_transfer' ? 'border-accent bg-accent/5' : 'border-border'}`}>
-                        <input type="radio" name="payment" value="bank_transfer" checked={paymentMethod === 'bank_transfer'} onChange={() => setPaymentMethod('bank_transfer')} className="accent-accent" />
-                        <CreditCard className="w-5 h-5 text-muted" />
-                        <div>
-                            <p className="text-sm text-foreground">Bank Transfer</p>
-                            <p className="text-xs text-muted">Pay via bank transaction</p>
-                        </div>
-                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${paymentMethod === 'cod' ? 'border-accent bg-accent/5' : 'border-border'}`}>
+                            <input type="radio" name="payment" value="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-accent" />
+                            <Building2 className="w-5 h-5 text-muted" />
+                            <div>
+                                <p className="text-sm text-foreground">Cash on Delivery</p>
+                            </div>
+                        </label>
+                        <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${paymentMethod === 'credit_card' ? 'border-accent bg-accent/5' : 'border-border'}`}>
+                            <input type="radio" name="payment" value="credit_card" checked={paymentMethod === 'credit_card'} onChange={() => setPaymentMethod('credit_card')} className="accent-accent" />
+                            <CreditCard className="w-5 h-5 text-muted" />
+                            <div>
+                                <p className="text-sm text-foreground">Credit Card</p>
+                            </div>
+                        </label>
+                        <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${paymentMethod === 'momo' ? 'border-[#A50064] bg-[#A50064]/10' : 'border-border'}`}>
+                            <input type="radio" name="payment" value="momo" checked={paymentMethod === 'momo'} onChange={() => setPaymentMethod('momo')} className="accent-[#A50064]" />
+                            <div className="w-5 h-5 rounded bg-[#A50064] flex items-center justify-center text-white text-[10px] font-bold">M</div>
+                            <div>
+                                <p className="text-sm text-foreground">MoMo</p>
+                            </div>
+                        </label>
+                        <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${paymentMethod === 'vnpay' ? 'border-[#005BAA] bg-[#005BAA]/10' : 'border-border'}`}>
+                            <input type="radio" name="payment" value="vnpay" checked={paymentMethod === 'vnpay'} onChange={() => setPaymentMethod('vnpay')} className="accent-[#005BAA]" />
+                            <div className="w-5 h-5 rounded bg-[#005BAA] flex items-center justify-center text-white text-[10px] font-bold">V</div>
+                            <div>
+                                <p className="text-sm text-foreground">VNPay</p>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
                 <div className="p-5 bg-surface rounded-xl border border-border">

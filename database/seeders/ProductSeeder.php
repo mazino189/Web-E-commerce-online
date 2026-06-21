@@ -26,6 +26,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Samsung Galaxy S24 Ultra 512GB',
                 'price' => 33990000,
+                'discount_percentage' => 10,
                 'category_slug' => 'smartphones-tablets',
                 'brand_name' => 'Samsung',
                 'description' => 'Siêu phẩm Galaxy S24 Ultra 512GB với khung viền Titanium bền bỉ, camera 200MP siêu nét và tích hợp Galaxy AI tiên tiến mang đến trải nghiệm đỉnh cao.',
@@ -58,6 +59,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Tablet Apple iPad Air 5 256GB',
                 'price' => 14990000,
+                'discount_percentage' => 15,
                 'category_slug' => 'smartphones-tablets',
                 'brand_name' => 'Apple',
                 'description' => 'iPad Air 5 256GB với thiết kế mỏng nhẹ, màn hình 10.9 inch Retina sắc nét, hiệu năng mạnh mẽ từ chip M1, hỗ trợ Apple Pencil 2 và Magic Keyboard cho trải nghiệm làm việc và giải trí tuyệt vời.',
@@ -164,6 +166,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Đồng hồ Samsung Galaxy Watch 6 Classic',
                 'price' => 8990000,
+                'discount_percentage' => 20,
                 'category_slug' => 'wearables-smartwatches',
                 'brand_name' => 'Samsung',
                 'description' => 'Thiết kế viền xoay vật lý cổ điển, theo dõi sức khỏe toàn diện với công nghệ phân tích giấc ngủ và đo huyết áp chuyên sâu.',
@@ -246,6 +249,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Laptop Dell XPS 15 9530',
                 'price' => 69990000,
+                'discount_percentage' => 5,
                 'category_slug' => 'laptops-computers',
                 'brand_name' => 'Dell',
                 'description' => 'Kiệt tác laptop cao cấp từ Dell với vi xử lý Intel Core i7 thế hệ 13th, màn hình OLED sắc nét, thiết kế vỏ nhôm sang trọng và hiệu suất đồ họa cực kỳ ấn tượng.',
@@ -418,6 +422,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Tai nghe AirPods Pro Gen 2 (Type-C)',
                 'price' => 6190000,
+                'discount_percentage' => 10,
                 'category_slug' => 'audio-speakers',
                 'brand_name' => 'Apple',
                 'description' => 'Tai nghe True Wireless cao cấp của Apple nay đã hỗ trợ cổng sạc Type-C. Chống ồn chủ động (ANC) tốt hơn gấp 2 lần.',

@@ -28,10 +28,11 @@ export default function Footer() {
                     <div>
                         <h3 className="text-slate-100 font-medium mb-6">Hardware</h3>
                         <ul className="space-y-4 text-sm font-light">
-                            <li><Link to="/?search=Laptop" className="hover:text-cyan-400 transition-colors">Laptops</Link></li>
-                            <li><Link to="/?search=Phone" className="hover:text-cyan-400 transition-colors">Smartphones</Link></li>
-                            <li><Link to="/?search=Audio" className="hover:text-cyan-400 transition-colors">Audio Equipment</Link></li>
-                            <li><Link to="/?search=Accessories" className="hover:text-cyan-400 transition-colors">Accessories</Link></li>
+                            <li><Link to="/home?category_slug=laptops-computers" className="hover:text-cyan-400 transition-colors">Laptops</Link></li>
+                            <li><Link to="/home?category_slug=smartphones-tablets" className="hover:text-cyan-400 transition-colors">Smartphones & Tablets</Link></li>
+                            <li><Link to="/home?category_slug=audio-speakers" className="hover:text-cyan-400 transition-colors">Audio & Speakers</Link></li>
+                            <li><Link to="/home?category_slug=accessories" className="hover:text-cyan-400 transition-colors">Accessories & Peripherals</Link></li>
+                            <li><Link to="/home?category_slug=wearables-smartwatches" className="hover:text-cyan-400 transition-colors">Wearables & Smartwatches</Link></li>
                         </ul>
                     </div>
 
@@ -51,13 +52,13 @@ export default function Footer() {
                         <h3 className="text-slate-100 font-medium mb-6">Stay Updated</h3>
                         <p className="text-sm font-light mb-4">Subscribe to our newsletter for early access to new releases.</p>
                         <form className="flex">
-                            <input 
-                                type="email" 
-                                placeholder="Enter your email" 
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
                                 className="flex-1 bg-slate-900 border border-slate-800 rounded-l-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors"
                             />
-                            <button 
-                                type="submit" 
+                            <button
+                                type="submit"
                                 className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-4 py-2 rounded-r-xl transition-colors flex items-center justify-center"
                             >
                                 <Mail className="w-4 h-4" />

@@ -12,6 +12,7 @@ export default function Register() {
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -93,9 +94,23 @@ export default function Register() {
                         <p className="text-sm text-status-out bg-rose-400/10 px-3 py-2 rounded-lg">{error}</p>
                     )}
 
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                            checked={agreedToTerms}
+                            onChange={(e) => setAgreedToTerms(e.target.checked)}
+                            className="w-4 h-4 rounded border-border bg-surface text-accent focus:ring-accent"
+                        />
+                        <label htmlFor="terms" className="text-xs text-muted">
+                            I agree to the <Link to="/terms" className="text-accent hover:underline">Terms of Service</Link> and <Link to="/privacy-policy" className="text-accent hover:underline">Privacy Policy</Link>
+                        </label>
+                    </div>
+
                     <button
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || !agreedToTerms}
                         className="w-full px-4 py-2.5 bg-accent text-white rounded-lg font-medium text-sm hover:bg-accent-hover disabled:opacity-50 transition-colors"
                     >
                         {loading ? 'Creating account...' : 'Create Account'}

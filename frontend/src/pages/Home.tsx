@@ -26,6 +26,7 @@ interface ListResponse<T> {
 export default function Home() {
     const [searchParams] = useSearchParams();
     const search = searchParams.get('search') || '';
+    const categorySlugParam = searchParams.get('category_slug') || '';
 
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -45,20 +46,21 @@ export default function Home() {
         setLoading(true);
         const params = new URLSearchParams();
         if (search) params.set('search', search);
+        if (categorySlugParam) params.set('category_slug', categorySlugParam);
         if (categoryId) params.set('category_id', categoryId);
         if (brandId) params.set('brand_id', brandId);
         api.get<ListResponse<Product>>(`/products?${params.toString()}`)
             .then((res) => setProducts(res.data || []))
             .catch(() => setProducts([]))
             .finally(() => setLoading(false));
-    }, [search, categoryId, brandId]);
+    }, [search, categorySlugParam, categoryId, brandId]);
 
     const clearFilters = () => {
         setCategoryId('');
         setBrandId('');
     };
 
-    const hasFilters = search || categoryId || brandId;
+    const hasFilters = search || categorySlugParam || categoryId || brandId;
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

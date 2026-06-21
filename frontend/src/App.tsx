@@ -4,6 +4,7 @@ import { CartProvider } from './context/CartContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import SupportChat from './components/SupportChat';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -19,9 +20,13 @@ import AdminBrands from './pages/AdminBrands';
 
 import AdminOrders from './pages/AdminOrders';
 import AdminCustomers from './pages/AdminCustomers';
+import AdminSupport from './pages/AdminSupport';
 import ContactSupport from './pages/ContactSupport';
 import AboutUs from './pages/AboutUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import WarrantyPolicy from './pages/WarrantyPolicy';
+import Intro from './pages/Intro';
 import EditProfile from './pages/profile/EditProfile';
 import ChangePassword from './pages/profile/ChangePassword';
 import EditAvatar from './pages/profile/EditAvatar';
@@ -41,15 +46,17 @@ export default function App() {
                                 <Route path="brands" element={<AdminBrands />} />
                                 <Route path="orders" element={<AdminOrders />} />
                                 <Route path="customers" element={<AdminCustomers />} />
+                                <Route path="support" element={<AdminSupport />} />
                             </Route>
 
                             {/* Public/User Routes */}
+                            <Route path="/" element={<Intro />} />
                             <Route path="/*" element={
                                 <div className="min-h-screen flex flex-col bg-canvas">
                                     <Navbar />
                                     <main className="flex-1">
                                         <Routes>
-                                            <Route path="/" element={<Home />} />
+                                            <Route path="/home" element={<Home />} />
                                             <Route path="/products/:slug" element={<ProductDetail />} />
                                             <Route path="/cart" element={<Cart />} />
                                             <Route path="/checkout" element={<Checkout />} />
@@ -59,12 +66,15 @@ export default function App() {
                                             <Route path="/support" element={<ContactSupport />} />
                                             <Route path="/about-us" element={<AboutUs />} />
                                             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                                            <Route path="/terms" element={<TermsOfService />} />
+                                            <Route path="/warranty" element={<WarrantyPolicy />} />
                                             <Route path="/profile" element={<EditProfile />} />
                                             <Route path="/profile/password" element={<ChangePassword />} />
                                             <Route path="/profile/avatar" element={<EditAvatar />} />
                                         </Routes>
                                     </main>
                                     <Footer />
+                                    <SupportChat />
                                 </div>
                             } />
                         </Routes>

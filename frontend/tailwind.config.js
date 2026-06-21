@@ -7,25 +7,25 @@ export default {
     theme: {
         extend: {
             colors: {
-                canvas: '#FAFAF9',
-                surface: '#FFFFFF',
-                'border': '#E5E7EB',
+                canvas: '#020617',
+                surface: '#0F172A',
+                'border': '#1E293B',
                 accent: {
-                    DEFAULT: '#F59E0B',
-                    hover: '#D97706',
-                    light: '#FEF3C7'
+                    DEFAULT: '#06B6D4',
+                    hover: '#0891B2',
+                    light: '#164E63'
                 },
                 cyber: {
-                    DEFAULT: '#1F2937',
-                    light: '#374151',
+                    DEFAULT: '#06B6D4',
+                    light: '#22D3EE',
                 },
                 status: {
                     in: '#10B981',
                     low: '#F59E0B',
                     out: '#EF4444',
                 },
-                foreground: '#1F2937',
-                muted: '#78716C',
+                foreground: '#F1F5F9',
+                muted: '#94A3B8',
                 'slate': {
                     950: '#1C1917',
                     900: '#292524',

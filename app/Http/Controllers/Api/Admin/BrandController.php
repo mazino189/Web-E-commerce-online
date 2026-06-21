@@ -7,6 +7,7 @@ use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class BrandController extends Controller
 {
@@ -17,7 +18,16 @@ class BrandController extends Controller
 
     public function store(StoreBrandRequest $request)
     {
-        $brand = Brand::create($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('logo')->getRealPath(), [
+                'folder' => 'ecommerce/brands',
+            ])->getSecurePath();
+            $validated['logo'] = $uploadedFileUrl;
+        }
+
+        $brand = Brand::create($validated);
 
         return BrandResource::make($brand)
             ->response()
@@ -31,7 +41,16 @@ class BrandController extends Controller
 
     public function update(UpdateBrandRequest $request, Brand $brand): BrandResource
     {
-        $brand->update($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            $uploadedFileUrl = Cloudinary::upload($request->file('logo')->getRealPath(), [
+                'folder' => 'ecommerce/brands',
+            ])->getSecurePath();
+            $validated['logo'] = $uploadedFileUrl;
+        }
+
+        $brand->update($validated);
 
         return new BrandResource($brand);
     }
