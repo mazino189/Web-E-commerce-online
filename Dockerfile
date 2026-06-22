@@ -14,7 +14,9 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql pdo_pgsql gd zip bcmath
+    && docker-php-ext-install pdo_mysql pdo_pgsql gd zip bcmath \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Kích hoạt module rewrite của Apache (cho Laravel Routing)
 RUN a2enmod rewrite
@@ -24,26 +26,30 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Sao chép mã nguồn vào container
 WORKDIR /var/www/html
-COPY . .
-
-# Copy the startup script
-COPY start.sh /var/www/html/start.sh
-
-# Fix Windows CRLF line endings to Linux LF
-RUN sed -i -e 's/\r$//' /var/www/html/start.sh
-
-# Grant execute permissions
-RUN chmod +x /var/www/html/start.sh
 
 # Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Chạy composer install
-RUN composer install --no-interaction --optimize-autoloader --no-dev --ignore-platform-reqs
-RUN npm install 
+# Optimized Docker Cache Layers: Copy lock files first
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --no-scripts --no-autoloader --no-dev --ignore-platform-reqs
+
+# Copy root NPM if needed
+COPY package.json package-lock.json* ./
+RUN npm install
+
+# Copy everything else
+COPY . .
+
+# Complete composer setup
+RUN composer dump-autoload --optimize
+
+# Build frontend/root dependencies
 RUN npm run build
+
+# Fix Windows CRLF line endings and grant execute permissions
+RUN sed -i -e 's/\r$//' start.sh && chmod +x start.sh
 
 # Chown necessary directories
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
