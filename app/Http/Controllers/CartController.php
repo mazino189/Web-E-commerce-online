@@ -37,7 +37,7 @@ class CartController extends Controller
 
         if ($existing) {
             $existing->update(['quantity' => $newQuantity]);
-            $existing->load('product');
+            $existing->load('product.category');
 
             return CartResource::make($existing)->response()->setStatusCode(200);
         }
@@ -47,7 +47,7 @@ class CartController extends Controller
             'product_id' => $product->id,
             'quantity' => $request->quantity,
         ]);
-        $cart->load('product');
+        $cart->load('product.category');
 
         return CartResource::make($cart)->response()->setStatusCode(201);
     }
@@ -67,7 +67,7 @@ class CartController extends Controller
         }
 
         $cart->update(['quantity' => $request->quantity]);
-        $cart->load('product');
+        $cart->load('product.category');
 
         return CartResource::make($cart)->response()->setStatusCode(200);
     }

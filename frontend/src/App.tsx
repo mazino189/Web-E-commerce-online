@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -51,32 +51,32 @@ export default function App() {
 
                             {/* Public/User Routes */}
                             <Route path="/" element={<Intro />} />
-                            <Route path="/*" element={
+                            <Route element={
                                 <div className="min-h-screen flex flex-col bg-canvas">
                                     <Navbar />
                                     <main className="flex-1">
-                                        <Routes>
-                                            <Route path="/home" element={<Home />} />
-                                            <Route path="/products/:slug" element={<ProductDetail />} />
-                                            <Route path="/cart" element={<Cart />} />
-                                            <Route path="/checkout" element={<Checkout />} />
-                                            <Route path="/login" element={<Login />} />
-                                            <Route path="/orders" element={<Orders />} />
-                                            <Route path="/register" element={<Register />} />
-                                            <Route path="/support" element={<ContactSupport />} />
-                                            <Route path="/about-us" element={<AboutUs />} />
-                                            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                                            <Route path="/terms" element={<TermsOfService />} />
-                                            <Route path="/warranty" element={<WarrantyPolicy />} />
-                                            <Route path="/profile" element={<EditProfile />} />
-                                            <Route path="/profile/password" element={<ChangePassword />} />
-                                            <Route path="/profile/avatar" element={<EditAvatar />} />
-                                        </Routes>
+                                        <Outlet />
                                     </main>
                                     <Footer />
                                     <SupportChat />
                                 </div>
-                            } />
+                            }>
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/products/:slug" element={<ProductDetail />} />
+                                <Route path="/cart" element={<Cart />} />
+                                <Route path="/checkout" element={<Checkout />} />
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/orders" element={<Orders />} />
+                                <Route path="/register" element={<Register />} />
+                                <Route path="/support" element={<ContactSupport />} />
+                                <Route path="/about-us" element={<AboutUs />} />
+                                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                                <Route path="/terms" element={<TermsOfService />} />
+                                <Route path="/warranty" element={<WarrantyPolicy />} />
+                                <Route path="/profile" element={<EditProfile />} />
+                                <Route path="/profile/password" element={<ChangePassword />} />
+                                <Route path="/profile/avatar" element={<EditAvatar />} />
+                            </Route>
                         </Routes>
                     </ErrorBoundary>
                 </CartProvider>

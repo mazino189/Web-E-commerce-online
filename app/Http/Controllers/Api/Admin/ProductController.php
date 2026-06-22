@@ -37,15 +37,17 @@ class ProductController extends Controller
             ->setStatusCode(201);
     }
 
-    public function show(Product $product): ProductResource
+    public function show($idOrSlug): ProductResource
     {
+        $product = Product::where('id', $idOrSlug)->orWhere('slug', $idOrSlug)->firstOrFail();
         $product->load(['category', 'brand']);
 
         return new ProductResource($product);
     }
 
-    public function update(UpdateProductRequest $request, Product $product): ProductResource
+    public function update(UpdateProductRequest $request, $idOrSlug): ProductResource
     {
+        $product = Product::where('id', $idOrSlug)->orWhere('slug', $idOrSlug)->firstOrFail();
         $data = $request->validated();
         if ($request->hasFile('image')) {
             if (app()->environment('testing')) {
@@ -63,8 +65,9 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    public function destroy(Product $product)
+    public function destroy($idOrSlug)
     {
+        $product = Product::where('id', $idOrSlug)->orWhere('slug', $idOrSlug)->firstOrFail();
         $product->delete();
 
         return response()->json(['message' => 'Product deleted successfully.']);
