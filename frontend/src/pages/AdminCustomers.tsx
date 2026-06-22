@@ -41,7 +41,8 @@ export default function AdminCustomers() {
             setCustomers(customers.filter(c => c.id !== id));
         } catch (err: any) {
             console.error('Failed to delete customer', err);
-            alert(err?.response?.data?.message || 'Failed to delete customer.');
+            const errorMsg = err.data?.message || err.message || 'Failed to delete customer.';
+            alert(errorMsg);
         }
     };
 
@@ -69,7 +70,8 @@ export default function AdminCustomers() {
             handleCloseModal();
         } catch (err: any) {
             console.error('Failed to update customer', err);
-            alert(err?.response?.data?.message || 'Failed to update customer.');
+            const errorMsg = err.data?.message || err.message || 'Failed to update customer.';
+            alert(errorMsg);
         } finally {
             setIsSubmitting(false);
         }
@@ -87,7 +89,8 @@ export default function AdminCustomers() {
             setIsCreateModalOpen(false);
         } catch (err: any) {
             console.error('Failed to create user', err);
-            alert(err?.response?.data?.message || 'Failed to create user.');
+            const errorMsg = err.data?.message || err.message || 'Failed to create user.';
+            alert(errorMsg);
         } finally {
             setIsSubmitting(false);
         }
