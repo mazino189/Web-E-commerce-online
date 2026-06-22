@@ -20,7 +20,7 @@ export default function Login() {
             if (loggedInUser.role === 'admin') {
                 navigate('/admin/dashboard');
             } else {
-                navigate('/');
+                navigate('/home');
             }
         } catch (err: any) {
             setError(err.data?.message || 'Invalid credentials');

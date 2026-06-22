@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ShoppingCart, LogOut, Menu, X, Zap, Search, ChevronDown } from 'lucide-react';
+import { ShoppingCart, LogOut, Menu, X, Search, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import logoImg from '../assets/logo.png';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -18,9 +19,9 @@ export default function Navbar() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
-            navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+            navigate(`/home?search=${encodeURIComponent(searchQuery.trim())}`);
         } else {
-            navigate('/');
+            navigate('/home');
         }
     };
 
@@ -41,11 +42,12 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 gap-4">
                     {/* LOGO */}
-                    <Link to="/" className="flex items-center gap-2 group shrink-0">
-                        <Zap className="w-6 h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-                        <span className="text-xl font-bold text-slate-100 tracking-tight font-mono">
-                            VOLTAIRE<span className="text-cyan-400">/</span>TECH
-                        </span>
+                    <Link to="/home" className="flex items-center group shrink-0">
+                        <img
+                            src={logoImg}
+                            alt="VOLTAIRE/TECH"
+                            className="h-9 w-auto object-contain group-hover:opacity-90 transition-opacity"
+                        />
                     </Link>
 
                     {/* SEARCH BAR (Desktop) */}
@@ -182,7 +184,7 @@ export default function Navbar() {
             {menuOpen && (
                 <div className="md:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur-md">
                     <div className="px-4 py-4 space-y-4">
-                        <Link to="/" className="block text-slate-300 font-medium text-sm" onClick={() => setMenuOpen(false)}>
+                        <Link to="/home" className="block text-slate-300 font-medium text-sm" onClick={() => setMenuOpen(false)}>
                             Products
                         </Link>
                         {user ? (

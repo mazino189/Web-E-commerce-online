@@ -1,14 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import logoImg from '../assets/logo.png';
 
 export default function Intro() {
     const navigate = useNavigate();
+    const { user, loading } = useAuth();
     const [text, setText] = useState('');
     const fullText = "Engineered for a quieter future.";
     const [isComplete, setIsComplete] = useState(false);
 
+    // If user is already logged in, skip the intro and go straight to home
     useEffect(() => {
+        if (!loading && user) {
+            navigate('/home', { replace: true });
+        }
+    }, [user, loading, navigate]);
+
+    useEffect(() => {
+        // Don't start the animation until auth check is done and user is NOT logged in
+        if (loading || user) return;
         let i = 0;
         const timer = setInterval(() => {
             setText(fullText.substring(0, i));
@@ -19,7 +31,11 @@ export default function Intro() {
             }
         }, 100);
         return () => clearInterval(timer);
-    }, []);
+    }, [loading, user]);
+
+    // Show nothing while checking auth to avoid flicker
+    if (loading) return null;
+    if (user) return null;
 
     return (
         <div className="min-h-screen bg-canvas flex flex-col items-center justify-center p-4 relative overflow-hidden">
@@ -29,11 +45,13 @@ export default function Intro() {
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px]" />
 
             <div className="relative z-10 flex flex-col items-center max-w-2xl text-center">
-                <div className="flex items-center gap-3 mb-8">
-                    <Zap className="w-12 h-12 text-accent animate-pulse" />
-                    <h1 className="text-5xl md:text-7xl font-bold text-foreground tracking-tighter">
-                        VOLTAIRE<span className="text-accent">/</span>TECH
-                    </h1>
+                {/* Logo */}
+                <div className="mb-8">
+                    <img
+                        src={logoImg}
+                        alt="VOLTAIRE/TECH"
+                        className="h-20 md:h-28 w-auto object-contain drop-shadow-[0_0_30px_rgba(0,229,255,0.4)] animate-pulse"
+                    />
                 </div>
                 
                 <div className="h-12 mb-12">
