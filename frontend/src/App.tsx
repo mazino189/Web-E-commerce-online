@@ -27,6 +27,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import WarrantyPolicy from './pages/WarrantyPolicy';
 import Intro from './pages/Intro';
+import Sale from './pages/Sale';
 import EditProfile from './pages/profile/EditProfile';
 import ChangePassword from './pages/profile/ChangePassword';
 import EditAvatar from './pages/profile/EditAvatar';
@@ -73,6 +74,7 @@ export default function App() {
                                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                                 <Route path="/terms" element={<TermsOfService />} />
                                 <Route path="/warranty" element={<WarrantyPolicy />} />
+                                <Route path="/sale" element={<Sale />} />
                                 <Route path="/profile" element={<EditProfile />} />
                                 <Route path="/profile/password" element={<ChangePassword />} />
                                 <Route path="/profile/avatar" element={<EditAvatar />} />

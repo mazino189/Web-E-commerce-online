@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import logoImg from '../assets/logo.png';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Register() {
         setLoading(true);
         try {
             await register(name, email, password, passwordConfirmation);
-            navigate('/');
+            navigate('/home');
         } catch (err: any) {
             const msg = err.data?.errors
                 ? Object.values(err.data.errors).flat().join(', ')
@@ -39,7 +39,7 @@ export default function Register() {
         <div className="min-h-[70vh] flex items-center justify-center px-4">
             <div className="w-full max-w-sm">
                 <div className="text-center mb-8">
-                    <Zap className="w-8 h-8 text-cyber mx-auto mb-3" />
+                    <img src={logoImg} alt="VOLTAIRE/TECH" className="h-10 w-auto mx-auto mb-3 object-contain" />
                     <h1 className="text-xl font-bold text-foreground">Create Account</h1>
                     <p className="text-sm text-muted mt-1">Join VOLTAIRE / TECH</p>
                 </div>

@@ -26,33 +26,29 @@ export default {
                 },
                 foreground: '#F1F5F9',
                 muted: '#94A3B8',
-                'slate': {
-                    950: '#1C1917',
-                    900: '#292524',
-                    800: '#E7E5E4',
-                    500: '#78716C',
-                    100: '#F5F5F4',
-                },
-                'indigo': {
-                    500: '#F59E0B',
-                    700: '#D97706',
-                },
-                'cyan': {
-                    400: '#1F2937',
-                    300: '#374151',
-                },
-                'emerald': {
-                    400: '#10B981',
-                },
-                'amber': {
-                    300: '#F59E0B',
-                },
-                'rose': {
-                    400: '#EF4444',
-                },
             },
             fontFamily: {
                 sans: ['Inter', 'Geist', 'system-ui', 'sans-serif'],
+                mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            },
+            animation: {
+                'fade-in': 'fadeIn 0.3s ease-in-out',
+                'slide-up': 'slideUp 0.3s ease-out',
+                'typing': 'typing 1.2s steps(3, end) infinite',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+                slideUp: {
+                    '0%': { opacity: '0', transform: 'translateY(10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                typing: {
+                    '0%, 100%': { opacity: '0.2' },
+                    '50%': { opacity: '1' },
+                },
             },
         },
     },

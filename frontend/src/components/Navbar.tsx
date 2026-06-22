@@ -64,6 +64,22 @@ export default function Navbar() {
                         </form>
                     </div>
 
+                    {/* NAV LINKS (Desktop) */}
+                    <div className="hidden md:flex items-center gap-6">
+                        <Link
+                            to="/home"
+                            className="text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors"
+                        >
+                            Products
+                        </Link>
+                        <Link
+                            to="/sale"
+                            className="flex items-center gap-1.5 text-sm font-bold text-status-out hover:text-rose-300 transition-colors"
+                        >
+                            🔥 Sale
+                        </Link>
+                    </div>
+
                     {/* CART & USER */}
                     <div className="hidden md:flex items-center gap-6 shrink-0">
                         <Link
@@ -186,6 +202,9 @@ export default function Navbar() {
                     <div className="px-4 py-4 space-y-4">
                         <Link to="/home" className="block text-slate-300 font-medium text-sm" onClick={() => setMenuOpen(false)}>
                             Products
+                        </Link>
+                        <Link to="/sale" className="block text-sm font-bold text-status-out" onClick={() => setMenuOpen(false)}>
+                            🔥 Sale
                         </Link>
                         {user ? (
                             <>

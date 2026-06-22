@@ -27,7 +27,7 @@ export default function Checkout() {
             await api.post('/checkout', { shipping_address: shippingAddress, phone_number: phoneNumber, payment_method: paymentMethod });
             clearCart();
             setSuccess(true);
-            setTimeout(() => navigate('/'), 2000);
+            setTimeout(() => navigate('/orders'), 2500);
         } catch (err: unknown) {
             const apiErr = err as { data?: { message?: string } };
             setError(apiErr.data?.message || 'Checkout failed. Please try again.');
@@ -39,11 +39,14 @@ export default function Checkout() {
     if (success) {
         return (
             <div className="max-w-lg mx-auto px-4 py-20 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-status-in/10 flex items-center justify-center">
-                    <Check className="w-8 h-8 text-status-in" />
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-status-in/10 flex items-center justify-center">
+                    <Check className="w-10 h-10 text-status-in" />
                 </div>
-                <h2 className="text-xl font-bold text-foreground mb-2">Order Placed!</h2>
-                <p className="text-sm text-muted">Your order has been confirmed. Redirecting...</p>
+                <h2 className="text-2xl font-bold text-foreground mb-2">Order Placed! 🎉</h2>
+                <p className="text-sm text-muted mb-6">Your order has been confirmed. Redirecting to your orders...</p>
+                <div className="w-full bg-border rounded-full h-1 overflow-hidden">
+                    <div className="h-full bg-status-in animate-[grow_2.5s_linear_forwards]" style={{width:'100%', animation:'none', transition:'width 2.5s linear'}} />
+                </div>
             </div>
         );
     }

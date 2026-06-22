@@ -108,12 +108,14 @@ export default function Orders() {
     if (orders.length === 0) {
         return (
             <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-                <Package className="w-16 h-16 mx-auto text-muted mb-4" />
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-surface border border-border flex items-center justify-center">
+                    <Package className="w-10 h-10 text-muted" />
+                </div>
                 <h2 className="text-xl font-semibold text-foreground mb-2">No orders yet</h2>
-                <p className="text-sm text-muted mb-6">Your order history will appear here.</p>
+                <p className="text-sm text-muted mb-6">Your order history will appear here once you place an order.</p>
                 <button
-                    onClick={() => navigate('/')}
-                    className="px-4 py-2 text-sm font-medium text-white bg-accent rounded-lg hover:bg-accent-hover transition-colors"
+                    onClick={() => navigate('/home')}
+                    className="px-6 py-2.5 text-sm font-medium text-white bg-accent rounded-xl hover:bg-accent-hover transition-colors"
                 >
                     Start Shopping
                 </button>
