@@ -1,58 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ⚡ VOLTAIRE / TECH — Premium Electronics eCommerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a modern, full-stack, highly secure, and performance-optimized eCommerce marketplace. It features a Laravel API Backend, a React + Vite + TypeScript Frontend styled in a premium Cyber-Minimalist dark theme, and secure Cloudinary cloud image storage.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Quick Start Guide (For Team Members)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Follow these steps sequentially to clone, configure, and run the entire project locally on your machine.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+### 📂 Step 1: Clone the Repository
+Open your terminal and run:
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/mazino189/Web-E-commerce-online.git
+cd Web-E-commerce-online
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 🐘 Step 2: Backend Setup (PHP & Laravel)
+The backend is powered by Laravel 13.x and PHP 8.3.
 
-## Contributing
+1. **Install Dependencies:**
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Configure Environment:**
+Copy the example environment file and set up your application key:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+*(Ensure `DB_CONNECTION=sqlite` is set in your `.env` for local development, or point it to your preferred database).*
 
-## Code of Conduct
+3. **Database Migration & Seeding:**
+Create the SQLite database file and populate it with initial data (Admin/User accounts, Categories, Brands, Products):
+```bash
+touch database/database.sqlite
+php artisan migrate
+php artisan db:seed
+```
+*Note: The seeder automatically creates an admin account (`admin@gmail.com` / `password`).*
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Link Storage:**
+```bash
+php artisan storage:link
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### ⚛️ Step 3: Frontend Setup (React & Vite)
+The frontend uses React with TypeScript, Vite, and Tailwind CSS.
 
-## License
+1. **Navigate to the Frontend Directory:**
+```bash
+cd frontend
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2. **Install Node Dependencies:**
+```bash
+npm install
+```
+
+3. **Build the Frontend (Optional but recommended for testing production):**
+```bash
+npm run build
+```
+
+---
+
+### 🏃 Step 4: Run the Application Locally
+
+To start developing, you need to run both the Laravel backend server and the Vite frontend server.
+
+**Start the Backend API:**
+Open a terminal in the root directory and run:
+```bash
+php artisan serve
+```
+*(The API will be available at http://localhost:8000)*
+
+**Start the Frontend Dev Server:**
+Open a separate terminal in the `frontend/` directory and run:
+```bash
+npm run dev
+```
+*(The React UI will be available at the URL provided by Vite, usually http://localhost:5173)*
+
+---
+
+## 🏗️ Architecture & Technology Stack
+- **Framework**: Laravel 13.x, PHP ^8.3, SQLite
+- **Frontend**: Vite + React + TypeScript + Tailwind CSS v3 + Alpine.js + Bootstrap 5
+- **Auth**: Laravel Sanctum / Breeze API authentication
+- **Deployment**: Docker (`php:8.3-apache`) configured for Render deployments.
+
+## 🛠️ Key Artisan Commands
+| Command | Purpose |
+|---|---|
+| `php artisan db:seed` | Seeds database with initial CSV products, admin user, categories, and brands. |
+| `php artisan test` | Runs PHPUnit test suite (uses in-memory SQLite, no `.env` required). |
+| `composer pint` | Runs Laravel Pint for PSR-12 code style enforcement. |
+
+---
+
+*For further assistance or API documentation, please refer to the internal team wiki or reach out to the DevOps team.*
