@@ -1,0 +1,62 @@
+* [33m40fa51a[m Session 9291b252-ba60-42ef-82c7-0130f9a9df25 - checkpoint turn 0
+* [33m3c9ad68[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbackend-stable[m[33m, [m[1;31morigin/backend-stable[m[33m)[m docs: update README with project specific instructions
+* [33m87c98d2[m[33m ([m[1;31morigin/main[m[33m, [m[1;32magents/project-website-overview[m[33m)[m chore: globally update PHP/JS dependencies, optimize Dockerfile, and generate python requirements
+* [33m4c6a505[m[33m ([m[1;33mtag: [m[1;33mv2.5[m[33m, [m[1;32mmain[m[33m)[m Complete 14 feature improvements including Sale page, Support updates, UI fixes, and routing
+* [33mc536f13[m Fix intro/login routing logic and add VOLTAIRE/TECH logo
+* [33maa625ab[m Fix customer error message and add AdminUserTest
+* [33mc35c5db[m sys: apply non-destructive fixes for admin product edit, cart loading, /home routing, and category upload
+* [33me215e06[m sys: fix admin product update validation, cart product eager loading, and terms of service page
+* [33mc32944b[m feat: ultimate upgrade completion
+* [33m0fd9ef5[m feat: complete user profile settings, admin proactive controls, static pages, and layouts
+* [33m7ab8691[m feat: complete full-stack admin management suite and support channels
+* [33me439783[m checkout: temporary commit for worktree checkout
+* [33m1bea205[m chore: update ProductSeeder with secure Cloudinary product images
+* [33mc3cabbd[m fix(seeder): remove syntax error and blank lines from ProductSeeder
+* [33m72b1cf6[m[33m ([m[1;33mtag: [m[1;33mv2.1[m[33m)[m sys: fix syntax typo in Dockerfile CMD
+* [33mad3a1c4[m[33m ([m[1;33mtag: [m[1;33mv2[m[33m)[m sys: update composer.lock to sync with composer.json and add sanctum
+* [33mf64bd35[m feat: complete Vietnamese dataset hydration with TGDD products, users, and 15 historical orders
+* [33mfbf6b85[m sys: complete database migration to real-time Vietnamese transaction dataset and categories
+* [33m77dbcc6[m Hydrate Database with Realistic Vietnamese E-Commerce Dataset
+* [33m76575b9[m sys: implement production-ready 4-tier image defense with Cloudinary integration
+* [33mf02d850[m sys: implement seed-time image authentication algorithm
+* [33mf103731[m fix: resolve duplicate image bug by allocating dynamic placeholder IDs to products
+* [33mdd020d2[m feat: integrate real-time Amazon product scraper dataset
+* [33mc1257a5[m Optimize pricing and image URLs
+* [33m62527fd[m Fix image fallbacks, expand seeders, fix known bugs
+* [33m0d76f2b[m chore: update food-storage fallback image to active unsplash id
+* [33m9ca07c1[m sys: implement robust start.sh with CRLF sanitization
+* [33m6066a93[m sys: migrate to start.sh script for robust Render startup
+* [33m14d68b9[m sys: automate migrate and seed in Docker CMD on startup
+* [33m454a66e[m sys: configure trusted proxies to enforce HTTPS on API links
+* [33ma9b86f6[m chore: final database resilient seeder and slug routing integration
+* [33mc96b3c9[m chore: implement category-specific image fallback utility
+* [33m0642716[m chore: consolidated unified general marketplace dataset
+* [33mcdb055f[m feat: add login, registration, and product detail pages
+* [33m566985f[m chore: refactor seeders to use realistic idempotent kitchen data
+* [33m2374f77[m Fix: ensure UserResource does not wrap response data
+* [33m4ef33b6[m Refactor: update controllers to use resource responses and improve API structure
+*   [33mca9bea1[m Merge branch 'temp-branch' into backend-stable
+[32m|[m[33m\[m  
+[32m|[m * [33me389416[m[33m ([m[1;32mtemp-branch[m[33m)[m save current stable state before merging
+[32m|[m * [33m3f78e08[m chore: add .aider* to .gitignore
+* [33m|[m [33m3791290[m Fix: idempotent migrations and seeder, Sanctum table guard
+* [33m|[m [33m557b02a[m Fix API routes and ProductController bugs
+* [33m|[m [33m3afbfcb[m Install pdo_pgsql driver
+* [33m|[m [33mc97d9e1[m Update composer.lock
+* [33m|[m [33mefb77a9[m Fix APP_KEY in render.yaml
+* [33m|[m [33md2844bd[m replacing file
+* [33m|[m [33mfb2d9f0[m backend v1 stable
+* [33m|[m [33m8b8a8a8[m fix: correct formatting in brands route definition
+* [33m|[m [33m13bb00e[m fix: remove pdo_sqlite installation and database setup from Dockerfile
+* [33m|[m [33mb449948[m[33m ([m[1;33mtag: [m[1;33mbackend-v1.1[m[33m)[m fix deployment and sanctum integration
+[33m|[m[33m/[m  
+* [33m848921e[m[33m ([m[1;33mtag: [m[1;33mbackend-v1[m[33m, [m[1;31morigin/frontend-dev[m[33m)[m feat: add controllers, requests, resources, and factories for brands, categories, products, cart, checkout, and orders
+* [33m9851d37[m feat: complete ecommerce backend api
+* [33m567372c[m update the path use Illuminate \ support\ facedes\URL
+* [33m57d2737[m Force Https in production
+* [33m2d4045a[m fix render vite build
+* [33ma363bad[m auto create sqlite database and run migration
+* [33m9729868[m upgrade docker to php 8.3 and use ignore-platform-reqs
+* [33me06bbfd[m add dockerfile
+* [33ma9d8216[m setup github actions ci
+* [33m46f3a37[m first commit
